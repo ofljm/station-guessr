@@ -7,7 +7,7 @@ function App() {
   const [count, setCount] = useState(0)
 
   useEffect(() => {
-    fetch('https://station-guessr-frontend.onrender.com/').then(res => res.text()).then(console.log);
+    fetch('https://station-guessr-backend.onrender.com/').then(res => res.text()).then(console.log);
   }, []);
 
   return (
