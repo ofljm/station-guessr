@@ -1,5 +1,6 @@
-import express, { Request, Response } from 'express';
 import cors from 'cors';
+import express from 'express';
+import routes from './api'; // Adjust the path as necessary
 
 const app = express();
 const port = process.env.PORT || 3000;
@@ -11,12 +12,8 @@ const options: cors.CorsOptions = {
 };
 
 app.use(cors(options));
-
 app.use(express.json());
-
-app.get('/', (req: Request, res: Response) => {
-    res.send('Hello, TypeScript Express!');
-});
+app.use('/', routes);
 
 app.listen(port, () => {
     console.log(`Server running at http://localhost:${port}`);
