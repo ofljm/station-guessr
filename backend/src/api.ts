@@ -24,6 +24,7 @@ router.post('/login', (req: Request, res: Response) => {
 });
 
 router.get('/users', (req: Request, res: Response) => {
+    console.log(loggedInUsers);
     res.status(200).json(loggedInUsers);
 });
 
