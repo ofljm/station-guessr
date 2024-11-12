@@ -1,18 +1,16 @@
 import { useEffect, useState } from 'react';
-import { getUsers, login } from './Api';
+import { getPlayers, login } from './Api';
 import './App.css';
-import { User } from './domain/User';
+import { Player } from './domain/Player';
+import { v4 as uuidv4 } from 'uuid';
 
 function App() {
-  const [uuid, setUuid] = useState<string>('');
-  const [users, setUsers] = useState<User[]>([]);
+  const [username, setUsername] = useState<string>('');
+  const [players, setUsers] = useState<Player[]>([]);
 
   const fetchUsers = () => {
-    getUsers()
-      .then((response) => response.json())
-      .then((data) => {
-        setUsers(data as unknown as User[]);
-      })
+    getPlayers()
+      .then((response) => setUsers(response))
       .catch((error) => {
         console.error('Failed to fetch users:', error);
       });
@@ -20,7 +18,7 @@ function App() {
 
   useEffect(() => {
     fetchUsers();
-    
+
     const intervalId = setInterval(() => {
       fetchUsers();
     }, 5000); // Fetch every 5 seconds
@@ -30,9 +28,10 @@ function App() {
 
   const handleLogin = async () => {
     try {
-      const response = await login(uuid);
+      const uuid = uuidv4();
+      const response = await login(username, uuid);
       console.log('Login successful:', response);
-      fetchUsers(); // Fetch users after successful login
+      fetchUsers();
     } catch (error) {
       console.error('Login failed:', error);
     }
@@ -43,14 +42,14 @@ function App() {
       <p>Login here, totally not sketchy</p>
       <input
         type="text"
-        value={uuid}
-        onChange={(e) => setUuid(e.target.value)}
-        placeholder="Enter UUID"
+        value={username}
+        onChange={(e) => setUsername(e.target.value)}
+        placeholder="Your Name"
       />
       <button onClick={handleLogin}>Login</button>
       <ul>
-        {users.map((user) => (
-          <li key={user.uuid}>{user.uuid}</li>
+        {players.map((player) => (
+          <li key={player.uuid}>{player.name}</li>
         ))}
       </ul>
     </>

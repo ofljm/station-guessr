@@ -1,15 +1,18 @@
+import axios from "axios";
+import { Player } from "./domain/Player";
+
 const apiUrl = import.meta.env.VITE_SERVICE_URL;
 
-export function login(uuid: string) {	
-    return fetch(`${apiUrl}/login`, {
-        method: 'POST',
-        headers: {
-            'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({ uuid }),
-    });
+type LoginResponse = {
+    message: string;
+    uuid: string;
 }
 
-export function getUsers() {
-    return fetch(`${apiUrl}/users`);
+export async function login(playerName: string, uuid: string): Promise<LoginResponse> {
+    const response = await axios.post<LoginResponse>(`${apiUrl}/login`, { playerName, uuid });
+    return response.data;
+}
+export async function getPlayers(): Promise<Player[]> {
+    const response = await axios.get<Player[]>(`${apiUrl}/players`);
+    return response.data;
 }
