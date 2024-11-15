@@ -2,10 +2,12 @@ import { useEffect, useState } from 'react';
 import { getPlayers, login } from './Api';
 import './App.css';
 import { Player } from './domain/Player';
+import axios, { AxiosError } from 'axios';
 
 function App() {
   const [username, setUsername] = useState<string>('');
   const [players, setUsers] = useState<Player[]>([]);
+  const [error, setError] = useState<string | undefined>();
 
   const fetchUsers = () => {
     getPlayers()
@@ -30,8 +32,12 @@ function App() {
       const response = await login(username);
       console.log('Login successful:', response);
       fetchUsers();
-    } catch (error) {
-      console.error('Login failed:', error);
+    } catch (error: unknown) {
+      if (axios.isAxiosError(error)) {
+        const axiosError = error as AxiosError<{message: string}>; 
+        console.error('Login failed:', axiosError);
+        setError(axiosError.response?.data?.message);
+      }
     }
   };
 
@@ -45,6 +51,7 @@ function App() {
         placeholder="Your Name"
       />
       <button onClick={handleLogin}>Login</button>
+      <p style={{ "color": "red" }}>{error}</p>
       <ul>
         {players.map((player) => (
           <li key={player.name}>{player.name}</li>
