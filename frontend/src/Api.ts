@@ -8,8 +8,8 @@ type LoginResponse = {
     uuid: string;
 }
 
-export async function login(playerName: string, uuid: string): Promise<LoginResponse> {
-    const response = await axios.post<LoginResponse>(`${apiUrl}/login`, { playerName, uuid });
+export async function login(playerName: string): Promise<LoginResponse> {
+    const response = await axios.post<LoginResponse>(`${apiUrl}/login`, { playerName });
     return response.data;
 }
 export async function getPlayers(): Promise<Player[]> {

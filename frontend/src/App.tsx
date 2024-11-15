@@ -2,7 +2,6 @@ import { useEffect, useState } from 'react';
 import { getPlayers, login } from './Api';
 import './App.css';
 import { Player } from './domain/Player';
-import { v4 as uuidv4 } from 'uuid';
 
 function App() {
   const [username, setUsername] = useState<string>('');
@@ -28,8 +27,7 @@ function App() {
 
   const handleLogin = async () => {
     try {
-      const uuid = uuidv4();
-      const response = await login(username, uuid);
+      const response = await login(username);
       console.log('Login successful:', response);
       fetchUsers();
     } catch (error) {
@@ -49,7 +47,7 @@ function App() {
       <button onClick={handleLogin}>Login</button>
       <ul>
         {players.map((player) => (
-          <li key={player.uuid}>{player.name}</li>
+          <li key={player.name}>{player.name}</li>
         ))}
       </ul>
     </>

@@ -1,37 +1,37 @@
-import { Router, Request, Response } from 'express';
-import { LoginResponse } from './domain/Responses';
+import { randomUUID } from 'crypto';
+import { Request, Response, Router } from 'express';
 import { Player } from './domain/Player';
+import { LoginResponse } from './domain/Responses';
+import PlayerStore from './storage/PlayerStore';
 
 const router = Router();
 
-const loggedInPlayers: Player[]= []
+type LoginRequest = {
+    playerName: string;
+}
 
-router.post('/login', (req: Request, res: Response<LoginResponse>) => {
-    const { playerName, uuid } = req.body;
+router.post('/login', (req: Request<LoginRequest>, res: Response<LoginResponse>) => {
+    const { playerName } = req.body;
 
-    if (!uuid) {
-        res.status(400).json({ message: 'UUID is required' });
-        return;
-    }
-
-    if(!playerName) {
+    if (!playerName) {
         res.status(400).json({ message: 'Player name is required' });
         return;
     }
 
-    // Check if the user is already logged in
-    const userExists = loggedInPlayers.some(user => user.uuid === uuid);
+    const playerStore = PlayerStore.getInstance();
 
-    if (!userExists) {
-        // Add the user to the logged-in users array
-        loggedInPlayers.push({ name: playerName, uuid });
+    if (playerStore.playerExists(playerName)) {
+        res.status(400).json({ message: 'Player name already exists' });
+        return;
     }
+
+    playerStore.addPlayer({ name: playerName });
 
     res.status(200).json({ message: 'Login successful' });
 });
 
-router.get('/players', (req: Request, res: Response) => {
-    res.status(200).json(loggedInPlayers);
+router.get('/players', (req: Request, res: Response<Player[]>) => {
+    res.status(200).json(PlayerStore.getInstance().getPlayers());
 });
 
 export default router;
