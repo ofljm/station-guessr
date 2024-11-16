@@ -13,16 +13,16 @@ const GameView: React.FC<GameViewProps> = ({ token }) => {
     const [error, setError] = useState<string | undefined>();
 
     async function handleGuess() {
-        setError("");
+        setError('');
         if (!currentGuess) {
             setError('Guess missing');
             return;
         }
 
         try {
-            const response = await submitGuess(token!, currentGuess!);
+            const response = await submitGuess(token, currentGuess);
             setGuessResult(response.result);
-            return setCorrectlyGuessedStations(response.correctlyGuessedStationNames!)
+            setCorrectlyGuessedStations(response.correctlyGuessedStationNames || []);
         } catch (error: unknown) {
             if (axios.isAxiosError(error)) {
                 const axiosError = error as AxiosError<{ message: string; }>;
