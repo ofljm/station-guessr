@@ -9,6 +9,6 @@ export type LoginResponse = Message & {
 }
 
 export type GuessResponse = Message & {
-    result: GuessResult
-    correctlyGuessedStationNames: string[]
+    result?: GuessResult
+    correctlyGuessedStationNames?: string[]
 }

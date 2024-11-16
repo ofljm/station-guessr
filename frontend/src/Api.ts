@@ -8,7 +8,7 @@ type LoginResponse = {
     token: string;
 }
 
-export type GuessResult = 'correct' | 'incorrect' | 'alreadyGuessed';
+export type GuessResult = 'correct' | 'incorrect' | 'alreadyGuessed' | 'invalid';
 
 type GuessResponse = {
     message: string
@@ -26,5 +26,6 @@ export async function getPlayers(): Promise<Player[]> {
 }
 
 export async function submitGuess(playerToken: string, station: string): Promise<GuessResponse> {
-    return await axios.post(`${apiUrl}/guess`, { playerToken, station });
+    const response = await axios.post(`${apiUrl}/guess`, { playerToken, station });
+    return response.data;
 }

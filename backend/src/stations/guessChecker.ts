@@ -2,7 +2,7 @@ import { Player } from "../storage/Player";
 import { Station } from "./station";
 import { Stations } from "./stations";
 
-export type GuessResult = 'correct' | 'incorrect' | 'alreadyGuessed' | 'invalid';
+export type GuessResult = 'correct' | 'incorrect' | 'alreadyGuessed';
 
 export interface CorrectGuess {
     result: 'correct';

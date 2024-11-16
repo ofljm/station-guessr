@@ -11,6 +11,7 @@ function App() {
   const [players, setUsers] = useState<Player[]>([]);
   const [error, setError] = useState<string | undefined>();
   const [correctlyGuessedStations, setCorrectlyGuessedStations] = useState<string[]>([]);
+  const [guessResult, setGuessResult] = useState<string | undefined>();
 
   const fetchUsers = () => {
     getPlayers()
@@ -36,6 +37,7 @@ function App() {
       const response = await login(username);
       console.log('Login successful:', response.message);
       setToken(response.token);
+      console.log('Received token:', response.token);
       fetchUsers();
     } catch (error: unknown) {
       if (axios.isAxiosError(error)) {
@@ -54,20 +56,22 @@ function App() {
     }
 
     try {
+      console.log('Using token:', token);
       const response = await submitGuess(token!, currentGuess!);
-      if (response.result === 'correct') {
-        setCorrectlyGuessedStations(response.correctlyGuessedStationNames!)
-      };
+      setGuessResult(response.result);
+      return setCorrectlyGuessedStations(response.correctlyGuessedStationNames!)
     } catch (error: unknown) {
       if (axios.isAxiosError(error)) {
         const axiosError = error as AxiosError<{ message: string; }>;
         console.error('Guess failed:', axiosError);
         setError(axiosError.response?.data?.message);
-
+      }
+    }
   }
+
   return (
     <>
-      <p style={{ "color": "red" }}>{error}</p>
+      <p style={{ color: "red" }}>{error}</p>
       <p>Login here, totally not sketchy</p>
       <input
         type="text"
@@ -88,6 +92,7 @@ function App() {
         onChange={(e) => setCurrentGuess(e.target.value)}
       />
       <button onClick={handleGuess}>Guess</button>
+      {guessResult && <p style={{color: "blue"}}>{guessResult}</p>}
       <ul>
         {correctlyGuessedStations.map((station) => (
           <li key={station}>{station}</li>
