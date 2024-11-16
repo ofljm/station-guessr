@@ -1,5 +1,5 @@
 import { randomUUID } from "crypto";
-import { Player } from "../domain/Player";
+import { Player } from "./Player";
 
 class PlayerStore {
     private static instance: PlayerStore;
@@ -16,11 +16,16 @@ class PlayerStore {
         return PlayerStore.instance;
     }
 
-    public addPlayer(player: Player): void {
-        this.players.set(randomUUID(), player);
+    public register(name: string): string {
+        const token = randomUUID();
+        this.players.set(token, {
+            name,
+            correctlyGuessedStationIds: []
+        });
+        return token;
     }
 
-    public getPlayer(id: string): any | undefined {
+    public getPlayer(id: string): Player | undefined {
         return this.players.get(id);
     }
 
@@ -37,6 +42,9 @@ class PlayerStore {
         return false;
     }
 
+    public updatePlayer(token: string, player: Player): void {
+        this.players.set(token, player);
+    }
 }
 
 export default PlayerStore;

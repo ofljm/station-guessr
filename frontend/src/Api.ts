@@ -5,7 +5,15 @@ const apiUrl = import.meta.env.VITE_SERVICE_URL;
 
 type LoginResponse = {
     message: string;
-    uuid: string;
+    token: string;
+}
+
+export type GuessResult = 'correct' | 'incorrect' | 'alreadyGuessed';
+
+type GuessResponse = {
+    message: string
+    result?: GuessResult
+    correctlyGuessedStationNames?: string[]
 }
 
 export async function login(playerName: string): Promise<LoginResponse> {
@@ -15,4 +23,8 @@ export async function login(playerName: string): Promise<LoginResponse> {
 export async function getPlayers(): Promise<Player[]> {
     const response = await axios.get<Player[]>(`${apiUrl}/players`);
     return response.data;
+}
+
+export async function submitGuess(playerToken: string, station: string): Promise<GuessResponse> {
+    return await axios.post(`${apiUrl}/guess`, { playerToken, station });
 }
