@@ -1,5 +1,6 @@
 import axios from "axios";
 import { Player } from "./domain/Player";
+import { PlayerStats } from "./domain/PlayerStats";
 
 const apiUrl = import.meta.env.VITE_SERVICE_URL;
 
@@ -27,8 +28,8 @@ export namespace Api {
         return response.data;
     }
 
-    export async function getPlayers(): Promise<Player[]> {
-        const response = await axios.get<Player[]>(`${apiUrl}/players`);
+    export async function getPlayers(): Promise<PlayerStats[]> {
+        const response = await axios.get<PlayerStats[]>(`${apiUrl}/players`);
         return response.data;
     }
 

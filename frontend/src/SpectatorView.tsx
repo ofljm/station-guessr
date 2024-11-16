@@ -1,9 +1,9 @@
 import React, { useEffect, useState } from 'react';
 import { Api } from './Api';
-import { Player } from './domain/Player';
+import { PlayerStats } from './domain/PlayerStats';
 
 const SpectatorView: React.FC = () => {
-    const [players, setUsers] = useState<Player[]>([]);
+    const [players, setUsers] = useState<PlayerStats[]>([]);
 
     const fetchUsers = () => {
         Api.getPlayers()
@@ -27,7 +27,7 @@ const SpectatorView: React.FC = () => {
         <>
             <ul>
                 {players.map((player) => (
-                    <li key={player.name}>{player.name}</li>
+                    <li key={player.name}>{player.name}: {player.correctGuesses}</li>
                 ))}
             </ul>
         </>

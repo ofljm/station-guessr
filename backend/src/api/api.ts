@@ -62,7 +62,7 @@ router.get('/players', (req: Request, res: Response<PlayerStats[]>): void => {
         .getPlayers()
         .map(player => ({
             name: player.name,
-            correctGuesses: 0 // TODO
+            correctGuesses: player.correctlyGuessedStationIds.length
         }));
     res.status(200).json(spectatorData);
 });
