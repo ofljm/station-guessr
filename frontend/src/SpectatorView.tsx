@@ -1,12 +1,12 @@
 import React, { useEffect, useState } from 'react';
-import { getPlayers } from './Api';
+import { Api } from './Api';
 import { Player } from './domain/Player';
 
 const SpectatorView: React.FC = () => {
     const [players, setUsers] = useState<Player[]>([]);
 
     const fetchUsers = () => {
-        getPlayers()
+        Api.getPlayers()
             .then((response) => setUsers(response))
             .catch((error) => {
                 console.error('Failed to fetch users:', error);

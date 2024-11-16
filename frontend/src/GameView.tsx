@@ -1,16 +1,21 @@
-import React, { useState } from 'react';
-import { submitGuess } from './Api';
 import axios, { AxiosError } from 'axios';
+import React, { useEffect, useState } from 'react';
+import { Api } from './Api';
+import { Player } from './domain/Player';
 
 interface GameViewProps {
-    token: string;
+    player: Player;
 }
 
-const GameView: React.FC<GameViewProps> = ({ token }) => {
+const GameView: React.FC<GameViewProps> = ({ player }) => {
     const [currentGuess, setCurrentGuess] = useState<string | undefined>();
-    const [correctlyGuessedStations, setCorrectlyGuessedStations] = useState<string[]>([]);
+    const [correctlyGuessedStationNames, setCorrectlyGuessedStations] = useState<string[]>([]);
     const [guessResult, setGuessResult] = useState<string | undefined>();
     const [error, setError] = useState<string | undefined>();
+
+    useEffect(() => {
+        setCorrectlyGuessedStations(player.correctlyGuessedStationNames);
+    }, []);
 
     async function handleGuess() {
         setError('');
@@ -20,7 +25,7 @@ const GameView: React.FC<GameViewProps> = ({ token }) => {
         }
 
         try {
-            const response = await submitGuess(token, currentGuess);
+            const response = await Api.submitGuess(localStorage.getItem('token')!, currentGuess);
             setGuessResult(response.result);
             setCorrectlyGuessedStations(response.correctlyGuessedStationNames || []);
         } catch (error: unknown) {
@@ -44,7 +49,7 @@ const GameView: React.FC<GameViewProps> = ({ token }) => {
             <button onClick={handleGuess}>Guess</button>
             {guessResult && <p style={{ color: "blue" }}>{guessResult}</p>}
             <ul>
-                {correctlyGuessedStations.map((station) => (
+                {correctlyGuessedStationNames.map((station) => (
                     <li key={station}>{station}</li>
                 ))}
             </ul>

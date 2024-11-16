@@ -12,3 +12,13 @@ export type GuessResponse = Message & {
     result?: GuessResult
     correctlyGuessedStationNames?: string[]
 }
+
+export type PlayerStats = {
+    name: string,
+    correctGuesses: number
+}
+
+export type PlayerData = Message & {
+    name?: string,
+    correctlyGuessedStationNames?: string[]
+}

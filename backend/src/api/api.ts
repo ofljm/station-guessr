@@ -1,7 +1,6 @@
 import { Request, Response, Router } from 'express';
 import PlayerStore from '../storage/PlayerStore';
-import { PlayerData } from './PlayerData';
-import { GuessResponse, LoginResponse } from './Responses';
+import { GuessResponse, LoginResponse, PlayerData, PlayerStats } from './Responses';
 import { GuessRequest, LoginRequest } from './Requests';
 import { checkGuess, CorrectGuess } from '../stations/guessChecker';
 import { Stations } from '../stations/stations';
@@ -32,7 +31,7 @@ router.post('/guess', (req: Request<GuessRequest>, res: Response<GuessResponse>)
     const { playerToken, station } = req.body;
 
     if (!playerToken || !station) {
-        res.status(400).json({ message: 'Player token and guess are required'});
+        res.status(400).json({ message: 'Player token and guess are required' });
         return;
     }
 
@@ -40,7 +39,7 @@ router.post('/guess', (req: Request<GuessRequest>, res: Response<GuessResponse>)
     const player = playerStore.getPlayer(playerToken);
 
     if (!player) {
-        res.status(400).json({ message: 'Player not found. Wrong token?'});
+        res.status(400).json({ message: 'Player not found. Wrong token?' });
         return;
     }
 
@@ -49,7 +48,7 @@ router.post('/guess', (req: Request<GuessRequest>, res: Response<GuessResponse>)
         handleCorrectGuess(player, checkGuessOutcome, playerStore, playerToken, res);
         return;
     };
-    
+
     res.status(200).json({
         message: 'Guess request successful but the guess itself was not.',
         result: checkGuessOutcome.result,
@@ -58,14 +57,36 @@ router.post('/guess', (req: Request<GuessRequest>, res: Response<GuessResponse>)
 
 });
 
-router.get('/players', (req: Request, res: Response<PlayerData[]>): void => {
-    const playerData = PlayerStore.getInstance()
+router.get('/players', (req: Request, res: Response<PlayerStats[]>): void => {
+    const spectatorData = PlayerStore.getInstance()
         .getPlayers()
         .map(player => ({
             name: player.name,
-            correctGuesses: 0
+            correctGuesses: 0 // TODO
         }));
-    res.status(200).json(playerData);
+    res.status(200).json(spectatorData);
+});
+
+router.get('/player', (req: Request, res: Response<PlayerData>): void => {
+    const token = req.headers['token'] as string | undefined;
+
+    if (!token) {
+        res.status(400).json({ message: 'Token is required' });
+        return;
+    }
+
+    const playerStore = PlayerStore.getInstance();
+    const maybePlayer: Player | undefined = playerStore.getPlayer(token!);
+    if (!maybePlayer) {
+        res.status(400).json({ message: 'Player not found. Wrong token?' });
+        return;
+    }
+
+    res.status(200).json({
+        message: '',
+        name: maybePlayer.name,
+        correctlyGuessedStationNames: Stations.getStationNames(maybePlayer.correctlyGuessedStationIds)
+    });
 });
 
 function handleCorrectGuess(player: Player, checkGuessOutcome: CorrectGuess, playerStore: PlayerStore, playerToken: any, res: Response<GuessResponse, Record<string, any>>) {

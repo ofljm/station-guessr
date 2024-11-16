@@ -25,8 +25,8 @@ class PlayerStore {
         return token;
     }
 
-    public getPlayer(id: string): Player | undefined {
-        return this.players.get(id);
+    public getPlayer(token: string): Player | undefined {
+        return this.players.get(token);
     }
 
     public getPlayers(): Player[] {

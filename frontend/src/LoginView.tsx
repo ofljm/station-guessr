@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
-import { login } from './Api';
 import axios, { AxiosError } from 'axios';
+import { Api } from './Api';
 
 interface LoginViewProps {
   onLogin: (token: string) => void;
@@ -13,7 +13,8 @@ const LoginView: React.FC<LoginViewProps> = ({ onLogin }) => {
   async function handleLogin() {
     setError('');
     try {
-      const response = await login(username);
+      const response = await Api.login(username);
+      console.log(response);
       onLogin(response.token);
     } catch (error: unknown) {
       if (axios.isAxiosError(error)) {
