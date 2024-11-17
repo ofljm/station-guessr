@@ -1,4 +1,4 @@
-import { Player } from "../storage/Player";
+import { Player } from "../storage/PlayerStore";
 import { Station } from "./station";
 import { Stations } from "./stations";
 

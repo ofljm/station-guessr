@@ -4,5 +4,6 @@ export type LoginRequest = {
 
 export type GuessRequest = {
     station: string
+    sessionToken: string
     playerToken: string
 }

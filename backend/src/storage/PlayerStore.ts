@@ -1,5 +1,9 @@
 import { randomUUID } from "crypto";
-import { Player } from "./Player";
+
+export type Player = {
+    name: string;
+    correctlyGuessedStationIds: string[];
+}
 
 class PlayerStore {
     private static instance: PlayerStore;

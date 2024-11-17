@@ -22,3 +22,9 @@ export type PlayerData = Message & {
     name?: string,
     correctlyGuessedStationNames?: string[]
 }
+
+export type GameSessionResponse = Message & {
+    sessionToken?: string
+    startTime?: number
+    duration?: number
+}
