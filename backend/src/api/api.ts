@@ -29,7 +29,8 @@ router.post('/login', (req: Request<LoginRequest>, res: Response<LoginResponse>)
 });
 
 router.post('/game/guess', (req: Request<GuessRequest>, res: Response<GuessResponse>): void => {
-    const { token, station } = req.body;
+    const { station } = req.body;
+    const token = req.headers['token'] as string;
 
     if (!token || !station) {
         res.status(400).json({ message: 'Token and guess are required' });
