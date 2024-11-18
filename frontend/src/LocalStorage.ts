@@ -1,22 +1,14 @@
 export namespace LocalStorage {
-    enum Keys {
-        sessionToken = 'sessionToken',
-        playerToken = 'playerToken'
+
+    export function getToken(): string | null {
+        return localStorage.getItem('token');
     }
 
-    export function getSessionToken(): string | null {
-        return localStorage.getItem(Keys.sessionToken);
+    export function setToken(token: string): void {
+        localStorage.setItem('token', token);
     }
 
-    export function setSessionToken(token: string): void {
-        localStorage.setItem(Keys.sessionToken, token);
-    }
-
-    export function getPlayerToken(): string | null {
-        return localStorage.getItem(Keys.playerToken);
-    }
-
-    export function setPlayerToken(token: string): void {
-        localStorage.setItem(Keys.playerToken, token);
+    export function clearToken(): void {
+        localStorage.removeItem('token');
     }
 }

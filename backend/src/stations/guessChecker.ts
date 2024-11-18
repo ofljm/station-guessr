@@ -1,4 +1,4 @@
-import { Player } from "../storage/PlayerStore";
+import { GameSession } from "../storage/gameSessionStore";
 import { Station } from "./station";
 import { Stations } from "./stations";
 
@@ -19,14 +19,14 @@ export interface AlreadyGuessed {
 
 export type GuessOutcome = CorrectGuess | IncorrectGuess | AlreadyGuessed;
 
-export function checkGuess(guess: string, player: Player): GuessOutcome {
-    const maybeCorrectStation = Stations.getStationByGuessableName(guess);
+export function checkGuess(guess: string, session: GameSession): GuessOutcome {
+    const stationGuessed = Stations.getStationByGuessableName(guess);
 
-    if (!maybeCorrectStation) {
+    if (!stationGuessed) {
         return { result: 'incorrect' };
     }
-    if (player.correctlyGuessedStationIds.includes(maybeCorrectStation.id)) {
+    if (session.correctlyGuessedStationIds.includes(stationGuessed.id)) {
         return { result: 'alreadyGuessed' };
     }
-    return {result: 'correct', station: maybeCorrectStation};
+    return {result: 'correct', station: stationGuessed};
 }

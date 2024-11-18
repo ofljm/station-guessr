@@ -15,7 +15,7 @@ export type GuessResponse = Message & {
 
 export type PlayerStats = {
     name: string,
-    correctGuesses: number
+    numberOfCorrectGuesses: number
 }
 
 export type PlayerData = Message & {
@@ -23,8 +23,13 @@ export type PlayerData = Message & {
     correctlyGuessedStationNames?: string[]
 }
 
-export type GameSessionResponse = Message & {
-    sessionToken?: string
+export type GameStartResponse = Message & {
     startTime?: number
     duration?: number
+}
+
+export type GameSessionResponse = Message & {
+    startTime?: number
+    duration?: number
+    correctlyGuessedStationNames?: string[]
 }

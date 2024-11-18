@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
-import { Api } from './Api';
-import { PlayerStats } from './domain/PlayerStats';
+import { PlayerStats } from '../domain/PlayerStats';
+import { Api } from '../api/Api';
 
 const SpectatorView: React.FC = () => {
     const [players, setUsers] = useState<PlayerStats[]>([]);

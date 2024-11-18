@@ -1,10 +1,11 @@
 import { Request, Response, Router } from 'express';
-import PlayerStore, { Player } from '../storage/PlayerStore';
-import { GameSessionResponse, GuessResponse, LoginResponse, PlayerData, PlayerStats } from './Responses';
-import { GuessRequest, LoginRequest } from './Requests';
 import { checkGuess, CorrectGuess } from '../stations/guessChecker';
 import { Stations } from '../stations/stations';
 import { GameSessionStore } from '../storage/gameSessionStore';
+import PlayerStore, { Player } from '../storage/PlayerStore';
+import { GuessRequest, LoginRequest } from './Requests';
+import { GameSessionResponse, GameStartResponse, GuessResponse, LoginResponse, PlayerData, PlayerStats } from './Responses';
+import { Session } from 'inspector/promises';
 
 const router = Router();
 
@@ -28,50 +29,72 @@ router.post('/login', (req: Request<LoginRequest>, res: Response<LoginResponse>)
 });
 
 router.post('/game/guess', (req: Request<GuessRequest>, res: Response<GuessResponse>): void => {
-    const { playerToken, sessionToken, station } = req.body;
+    const { token, station } = req.body;
 
-    if (!playerToken || !station) {
-        res.status(400).json({ message: 'Player token and guess are required' });
+    if (!token || !station) {
+        res.status(400).json({ message: 'Token and guess are required' });
         return;
     }
 
     const playerStore = PlayerStore.getInstance();
-    const player = playerStore.getPlayer(playerToken);
+    const player = playerStore.getPlayer(token);
 
     if (!player) {
         res.status(400).json({ message: 'Player not found. Wrong token?' });
         return;
     }
 
-    const isValid = GameSessionStore.getInstance().validate(sessionToken);
-    if (!isValid) {
+    const sessionStore = GameSessionStore.getInstance();
+
+    const session = sessionStore.getActiveSession(token);
+    if (!session) {
         res.status(400).json({ message: 'Session token is invalid or game session has ended.' });
         return;
     }
 
-    const checkGuessOutcome = checkGuess(station, player);
+    const checkGuessOutcome = checkGuess(station, session);
     if (checkGuessOutcome.result === 'correct') {
-        handleCorrectGuess(player, checkGuessOutcome, playerStore, playerToken, res);
+        session.correctlyGuessedStationIds.push(checkGuessOutcome.station.id);
+        sessionStore.updateSession(token, session);
+        const correctlyGuessedStationNames = Stations.getStationNames(session.correctlyGuessedStationIds);
+        res.status(200).json({
+            message: 'Guess request successful',
+            result: checkGuessOutcome.result,
+            correctlyGuessedStationNames
+        });
         return;
     };
 
     res.status(200).json({
         message: 'Guess request successful but the guess itself was not.',
         result: checkGuessOutcome.result,
-        correctlyGuessedStationNames: Stations.getStationNames(player.correctlyGuessedStationIds)
+        correctlyGuessedStationNames: Stations.getStationNames(session.correctlyGuessedStationIds)
     });
 });
 
 router.get('/players', (req: Request, res: Response<PlayerStats[]>): void => {
-    const spectatorData = PlayerStore.getInstance()
-        .getPlayers()
-        .map(player => ({
-            name: player.name,
-            correctGuesses: player.correctlyGuessedStationIds.length
-        }));
+    const sessionStore = GameSessionStore.getInstance();
+    const playerStore = PlayerStore.getInstance();
+
+    const spectatorData = sessionStore
+        .getTokens()
+        .map(token => {
+            const player = playerStore.getPlayer(token)
+            const session = sessionStore.getActiveSession(token);
+            if (!player || !session) {
+                return;
+            }
+            return {
+                name: player.name,
+                numberOfCorrectGuesses: session.correctlyGuessedStationIds.length
+            }
+        })
+        .filter(playerStats => playerStats !== undefined);
+
     res.status(200).json(spectatorData);
 });
 
+// TODO: Remove this, not necessary
 router.get('/player', (req: Request, res: Response<PlayerData>): void => {
     const playerToken = req.headers['player-token'] as string | undefined;
 
@@ -90,62 +113,46 @@ router.get('/player', (req: Request, res: Response<PlayerData>): void => {
     res.status(200).json({
         message: '',
         name: maybePlayer.name,
-        correctlyGuessedStationNames: Stations.getStationNames(maybePlayer.correctlyGuessedStationIds)
+        correctlyGuessedStationNames: Stations.getStationNames([])
     });
 });
 
-router.post('/game/start', (req: Request, res: Response<GameSessionResponse>): void => {
+router.post('/game/start', (req: Request, res: Response<GameStartResponse>): void => {
     const token = req.headers['token'] as string;
-    const duration = 300; // 5 minutes
+    const durationInSeconds = 300;
 
     const gameSessionStore = GameSessionStore.getInstance();
-    const sessionToken = gameSessionStore.startGame(token, duration);
+    gameSessionStore.startGame(token, durationInSeconds);
 
     res.status(200).json({
         message: 'Game session started',
-        sessionToken,
         startTime: Date.now(),
-        duration
+        duration: durationInSeconds
     });
 });
 
-router.get('/game/status', (req: Request, res: Response<GameSessionResponse>): void => {
-    const sessionToken = req.headers['session-token'] as string;
+router.get('/game/session', (req: Request, res: Response<GameSessionResponse>): void => {
+    const token = req.headers['token'] as string;
 
-    if (!sessionToken) {
-        res.status(400).json({ message: 'Session token is required' });
+    if (!token) {
+        res.status(400).json({ message: 'Token is required' });
         return;
     }
-    
+
     const gameSessionStore = GameSessionStore.getInstance();
-    const session = gameSessionStore.getSession(sessionToken);
+    const session = gameSessionStore.getActiveSession(token);
 
     if (!session) {
-        res.status(400).json({ message: 'Session not found. Wrong token?' });
+        res.status(400).json({ message: 'Game session not found. Either the token is wrong or the game session has ended.' });
         return;
     }
 
     res.status(200).json({
-        message: 'Session found',
-        sessionToken,
+        message: 'Game session found',
         startTime: session.startTime,
         duration: session.duration
     });
 });
-
-function handleCorrectGuess(player: Player, checkGuessOutcome: CorrectGuess, playerStore: PlayerStore, playerToken: any, res: Response<GuessResponse, Record<string, any>>) {
-        player.correctlyGuessedStationIds.push(checkGuessOutcome.station.id);
-        playerStore.updatePlayer(playerToken, player);
-
-        const correctlyGuessedStationNames = Stations.getStationNames(player.correctlyGuessedStationIds);
-        const json = {
-            message: 'Guess request successful',
-            result: checkGuessOutcome.result,
-            correctlyGuessedStationNames
-        };
-        console.log('Sending json:', json);
-        res.status(200).json(json);
-    }
 
 export default router;
 

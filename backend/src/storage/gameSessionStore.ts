@@ -1,15 +1,13 @@
-import { randomUUID } from "crypto"
 
 export type GameSession = {
-    playerToken: string
-    startTime: number  // Unix timestamp
+    startTime: number  // Unix timestamp (milliseconds)
     duration: number   // seconds
-    isActive: boolean
+    correctlyGuessedStationIds: string[]
 }
 
 export class GameSessionStore {
     private static instance: GameSessionStore;
-    private gameSessions: Map<string, GameSession>; // key: sessionToken
+    private gameSessions: Map<string, GameSession>; // key: token
 
     private constructor() {
         this.gameSessions = new Map();
@@ -22,32 +20,31 @@ export class GameSessionStore {
         return GameSessionStore.instance;
     }
 
-    public startGame(playerToken: string, duration: number): string {
-        const sessionToken = randomUUID();
-        this.gameSessions.set(sessionToken, {
-            playerToken,
+    public startGame(playerToken: string, duration: number): void {
+        this.gameSessions.set(playerToken, {
             startTime: Date.now(),
             duration,
-            isActive: true
+            correctlyGuessedStationIds: []
         });
-        return sessionToken;
     }
 
-    public getSession(sessionToken: string): GameSession | undefined {
-        if(this.validate(sessionToken)) {
-            return this.gameSessions.get(sessionToken);
-        } 
-    }
-
-    public validate(sessionToken: string): boolean {
-        const session = this.gameSessions.get(sessionToken);
-        if (!session?.isActive) {
-            return false;
+    public getActiveSession(token: string): GameSession | undefined {
+        const session = this.gameSessions.get(token);
+        if (!session) {
+            return;
         }
         if (session.startTime + session.duration * 1000 < Date.now()) {
-            session.isActive = false;
-            return false;
+            return;
         }
-        return true;
+        return session;
     }
+
+    public updateSession(token: string, session: GameSession): void {
+        this.gameSessions.set(token, session);
+    }
+
+    public getTokens(): string[] {
+        return Array.from(this.gameSessions.keys());
+    }
+
 }

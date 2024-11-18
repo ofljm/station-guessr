@@ -1,32 +1,33 @@
 import React, { useEffect, useState } from 'react';
-import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
+import { BrowserRouter, Navigate, Route, Routes } from 'react-router-dom';
 import './App.css';
-import GameView from './GameView';
-import LoginView from './LoginView';
-import SpectatorView from './SpectatorView';
+import GameView from './game/GameView';
 import Header from './Header';
-import { Player } from './domain/Player';
-import { Api } from './Api';
+import { LocalStorage } from './LocalStorage';
+import LoginView from './LoginView';
+import SpectatorView from './spectator/SpectatorView';
+import { Api } from './api/Api';
 
+// TODO: Remove getting player logic
 const App: React.FC = () => {
-  const [player, setPlayer] = useState<Player | null>(null);
+  const [playerToken, setPlayerToken] = useState<string | null>(null);
 
-  const handleLogin = (newToken: string) => {
-    localStorage.setItem('token', newToken);
-    getPlayer(newToken);
+  const handleLogin = (newPlayerToken: string) => {
+    localStorage.setItem('token', newPlayerToken);
+    getPlayer(newPlayerToken);
   };
 
   useEffect(() => {
-    const storedToken = localStorage.getItem('token');
-    console.log('storedToken', storedToken);
-    if (storedToken) {
-      getPlayer(storedToken);
+    const storedPlayerToken = LocalStorage.getToken();
+    console.log('storedToken', storedPlayerToken);
+    if (storedPlayerToken) {
+      getPlayer(storedPlayerToken);
     }
   }, []);
 
-  function getPlayer(token: string) {
-    Api.getPlayer(token)
-      .then(setPlayer)
+  function getPlayer(playerToken: string) {
+    Api.getPlayer(playerToken)
+      .then(_ => setPlayerToken(playerToken))
       .catch(() => {
         localStorage.removeItem('token');
       });
@@ -36,8 +37,8 @@ const App: React.FC = () => {
     <BrowserRouter>
       <Header />
       <Routes>
-        <Route path="/" element={player ? <Navigate to="/game" /> : <LoginView onLogin={handleLogin} />} />
-        <Route path="/game" element={player ? <GameView player={player} /> : <Navigate to="/" />} />
+        <Route path="/" element={playerToken ? <Navigate to="/game" /> : <LoginView onLogin={handleLogin} />} />
+        <Route path="/game" element={playerToken ? <GameView token={playerToken} /> : <Navigate to="/" />} />
         <Route path="/spectator" element={<SpectatorView />} />
       </Routes>
     </BrowserRouter>

@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import axios, { AxiosError } from 'axios';
-import { Api } from './Api';
+import { Api } from './api/Api';
 
 interface LoginViewProps {
   onLogin: (token: string) => void;
@@ -17,11 +17,7 @@ const LoginView: React.FC<LoginViewProps> = ({ onLogin }) => {
       console.log(response);
       onLogin(response.token);
     } catch (error: unknown) {
-      if (axios.isAxiosError(error)) {
-        const axiosError = error as AxiosError<{ message: string; }>;
-        console.error('Login failed:', axiosError);
-        setError(axiosError.response?.data?.message);
-      }
+      setError(`Login failed: ${error}`);
     }
   }
 

@@ -1,8 +1,7 @@
 import { randomUUID } from "crypto";
 
 export type Player = {
-    name: string;
-    correctlyGuessedStationIds: string[];
+    name: string
 }
 
 class PlayerStore {
@@ -23,8 +22,7 @@ class PlayerStore {
     public register(name: string): string {
         const token = randomUUID();
         this.players.set(token, {
-            name,
-            correctlyGuessedStationIds: []
+            name
         });
         return token;
     }
