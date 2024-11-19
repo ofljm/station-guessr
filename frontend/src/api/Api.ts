@@ -1,8 +1,7 @@
 import axios from "axios";
-import { handleApiError } from "./ApiErrorHandler";
-import { Player } from "../domain/Player";
-import { PlayerStats } from "../domain/PlayerStats";
 import { PlayerSession } from "../domain/PlayerSession";
+import { PlayerStats } from "../domain/PlayerStats";
+import { handleApiError } from "./ApiErrorHandler";
 
 type RegisterResponse = {
     message: string;
