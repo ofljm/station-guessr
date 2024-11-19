@@ -44,6 +44,7 @@ export namespace Api {
 
     export async function getPlayers(): Promise<PlayerStats[]> {
         const response = await apiClient.get<PlayerStats[]>('/player/all');
+        console.log('Get players response', response.data);
         return response.data;
     }
 

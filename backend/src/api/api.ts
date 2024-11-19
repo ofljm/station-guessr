@@ -68,11 +68,11 @@ router.post('/guess', (req: Request<GuessRequest>, res: Response<GuessResponse>)
 router.get('/player/all', (req: Request, res: Response<PlayerStats[]>): void => {
     const spectatorData = (PlayerSessionStore.getInstance())
         .getPlayerSessions()
-        .filter(playerSession => !playerSession)
-        .filter(playerSession => playerSession.gameSession)
         .map(playerSession => ({
             name: playerSession.player.name,
-            numberOfCorrectGuesses: playerSession.gameSession!.correctlyGuessedStationIds.length
+            numberOfCorrectGuesses: playerSession.gameSession
+                ? playerSession.gameSession.correctlyGuessedStationIds?.length
+                : 0
         }))
 
     res.status(200).json(spectatorData);

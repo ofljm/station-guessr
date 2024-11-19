@@ -56,6 +56,7 @@ class PlayerSessionStore {
     }
 
     public getPlayerSessions(): PlayerSession[] {
+        console.log('PlayerSessionStore.getPlayerSessions', this.playerSessions);
         return Array.from(this.playerSessions.values());
     }
 
