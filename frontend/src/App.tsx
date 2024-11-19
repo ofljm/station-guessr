@@ -30,7 +30,7 @@ const App: React.FC = () => {
     Api.getPlayerSession(playerToken)
       .then(playerSession => setPlayerSession(playerSession))
       .catch(() => {
-        console.log(`No player session found, removing token from local storage.`);
+        console.log('No player session found, removing token from local storage.');
         localStorage.removeItem('token');
         setToken(null);
       });
