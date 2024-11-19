@@ -1,34 +1,35 @@
 import React, { useEffect, useState } from 'react';
-import { GameSession } from './GameSession';
 import { Api } from '../api/Api';
+import { GameSession } from '../domain/PlayerSession';
 
 type GuessingViewProps = {
-    session: GameSession
+    gameSession: GameSession
     token: string
 }
 
-const GuessingView: React.FC<GuessingViewProps> = ({ session, token }) => {
-    const [timeRemaining, setTimeRemaining] = useState<number>(session.duration);
-    const [correctlyGuessedStationNames, setCorrectlyGuessedStations] = useState<string[]>([]);
+const GuessingView: React.FC<GuessingViewProps> = ({ gameSession, token }) => {
+    const [timeRemaining, setTimeRemaining] = useState<number>(gameSession.duration);
+    const [correctlyGuessedStationNames, setCorrectlyGuessedStationNames] = useState<string[]>(gameSession.correctlyGuessedStationNames);
     const [currentGuess, setCurrentGuess] = useState<string | undefined>();
     const [guessResult, setGuessResult] = useState<string | undefined>();
 
     useEffect(() => {
-        setCorrectlyGuessedStations(session.correctlyGuessedStationNames);
-
+        tickTime(gameSession, setTimeRemaining);
         const timer = setInterval(() => {
-            const elapsed = (Date.now() - session.startTime) / 1000;
-            const timeRemaining = Math.max(0, session.duration - elapsed);
-
-            setTimeRemaining(timeRemaining);
-
-            if (timeRemaining <= 0) {
-                clearInterval(timer);
-            }
-        }, 1000);
+            tickTime(gameSession, setTimeRemaining);
+        }, 250);
+        if (timeRemaining <= 0) {
+            clearInterval(timer);
+        }
 
         return () => clearInterval(timer);
     }, []);
+
+    function tickTime(gameSession: GameSession, setTimeRemaining: React.Dispatch<React.SetStateAction<number>>) {
+        const elapsed = (Date.now() - gameSession.startTime) / 1000;
+        const timeRemaining = Math.max(0, gameSession.duration - elapsed);
+        setTimeRemaining(Math.floor(timeRemaining));
+    }
 
     async function handleGuess() {
         if (!currentGuess) {
@@ -38,7 +39,7 @@ const GuessingView: React.FC<GuessingViewProps> = ({ session, token }) => {
         Api.submitGuess(token, currentGuess)
             .then(response => {
                 setGuessResult(response.result);
-                setCorrectlyGuessedStations(response.correctlyGuessedStationNames || []);
+                setCorrectlyGuessedStationNames(response.correctlyGuessedStationNames || []);
             })
             .catch(error => {
                 setGuessResult('Guess failed');
@@ -54,7 +55,7 @@ const GuessingView: React.FC<GuessingViewProps> = ({ session, token }) => {
                 placeholder="Your guess"
                 onChange={(e) => setCurrentGuess(e.target.value)}
             />
-            <button onClick={handleGuess}>Guess</button>
+            <button disabled={timeRemaining <= 0} onClick={handleGuess}>Guess</button>
             {guessResult && <p style={{ color: "blue" }}>{guessResult}</p>}
             <ul>
                 {correctlyGuessedStationNames.map((station) => (

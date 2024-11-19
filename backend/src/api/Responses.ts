@@ -1,10 +1,11 @@
 import { GuessResult } from "../stations/guessChecker"
+import { GameSession, Player } from "../storage/playerSessionStore"
 
 type Message = {
     message: string
 }
 
-export type LoginResponse = Message & {
+export type RegisterResponse = Message & {
     token?: string
 }
 
@@ -28,8 +29,17 @@ export type GameStartResponse = Message & {
     duration?: number
 }
 
-export type GameSessionResponse = Message & {
-    startTime?: number
-    duration?: number
-    correctlyGuessedStationNames?: string[]
+type PlayerResponse = {
+    name: string
+}
+
+type GameSessionResponse = {
+    startTime: number
+    duration: number
+    correctlyGuessedStationNames: string[]
+}
+
+export type PlayerSessionResponse = Message & {
+    player?: PlayerResponse
+    gameSession?: GameSessionResponse
 }

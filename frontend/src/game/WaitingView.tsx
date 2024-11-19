@@ -1,6 +1,6 @@
 import React from 'react';
-import { GameSession } from './GameSession';
 import { Api } from '../api/Api';
+import { GameSession } from '../domain/PlayerSession';
 
 interface WaitingViewProps {
     token: string
@@ -9,9 +9,10 @@ interface WaitingViewProps {
 
 const WaitingView: React.FC<WaitingViewProps> = ({ token: playerToken, onGameStart }) => {
 
-    const [error, setError] = React.useState<string>('');
+    const [error, setError] = React.useState<Error | null>();
 
     async function startGame() {
+        console.log('Starting game');
         Api.startGame(playerToken)
             .then(response => onGameStart({
                 duration: response.duration,
@@ -23,7 +24,7 @@ const WaitingView: React.FC<WaitingViewProps> = ({ token: playerToken, onGameSta
 
     return (
         <>
-            {error && <span>{error}</span>}
+            {error && <span>{error.message}</span>}
             <button onClick={startGame}>Start</button>
         </>
     );

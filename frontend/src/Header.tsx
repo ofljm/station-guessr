@@ -10,7 +10,7 @@ const Header: React.FC = () => {
   };
 
   const handleGameClick = () => {
-    navigate('/game');
+    navigate('/');
   };
 
   return (

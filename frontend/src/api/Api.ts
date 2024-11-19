@@ -2,8 +2,9 @@ import axios from "axios";
 import { handleApiError } from "./ApiErrorHandler";
 import { Player } from "../domain/Player";
 import { PlayerStats } from "../domain/PlayerStats";
+import { PlayerSession } from "../domain/PlayerSession";
 
-type LoginResponse = {
+type RegisterResponse = {
     message: string;
     token: string;
 }
@@ -22,13 +23,6 @@ export type GameStartResponse = {
     duration: number
 }
 
-export type GameSessionResponse = {
-    message: string
-    startTime: number
-    duration: number
-    correctlyGuessedStationNames: string[]
-}
-
 const apiClient = axios.create({
     baseURL: import.meta.env.VITE_SERVICE_URL,
 });
@@ -43,24 +37,18 @@ apiClient.interceptors.response.use(
 
 export namespace Api {
 
-    export async function login(playerName: string): Promise<LoginResponse> {
-        const response = await apiClient.post<LoginResponse>('/login', { playerName });
-        return response.data;
-    }
-
-    // TODO: Remove this, not necessary
-    export async function getPlayer(playerToken: string): Promise<Player> {
-        const response = await apiClient.get<Player>('/player', { headers: { 'player-token': playerToken } });
+    export async function login(playerName: string): Promise<RegisterResponse> {
+        const response = await apiClient.post<RegisterResponse>('/register', { playerName });
         return response.data;
     }
 
     export async function getPlayers(): Promise<PlayerStats[]> {
-        const response = await apiClient.get<PlayerStats[]>('/players');
+        const response = await apiClient.get<PlayerStats[]>('/player/all');
         return response.data;
     }
 
     export async function submitGuess(token: string, station: string): Promise<GuessResponse> {
-        const response = await apiClient.post('/game/guess',
+        const response = await apiClient.post<GuessResponse>('/guess',
             { station },
             { headers: { token } });
         return response.data;
@@ -68,17 +56,18 @@ export namespace Api {
 
     export async function startGame(token: string): Promise<GameStartResponse> {
         const response = await apiClient.post(
-            '/game/start',
+            '/start',
             {},
             { headers: { token } }
         );
         return response.data;
     }
 
-    export async function getGameSession(token: string): Promise<GameSessionResponse> {
-        const response = await apiClient.get('/game/session', {
+    export async function getPlayerSession(token: string): Promise<PlayerSession> {
+        const response = await apiClient.get('/player', {
             headers: { token: token }
         });
         return response.data;
     }
+
 }

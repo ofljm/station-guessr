@@ -1,4 +1,4 @@
-import { GameSession } from "../storage/gameSessionStore";
+import { GameSession } from "../storage/playerSessionStore";
 import { Station } from "./station";
 import { Stations } from "./stations";
 
