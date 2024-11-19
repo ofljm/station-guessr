@@ -1,13 +1,12 @@
 import React, { useEffect, useState } from 'react';
-import { BrowserRouter, Navigate, Route, Routes } from 'react-router-dom';
-import './App.css';
+import { BrowserRouter, Route, Routes } from 'react-router-dom';
+import { Api } from './api/Api';
+import { PlayerSession } from './domain/PlayerSession';
 import GameView from './game/GameView';
 import Header from './Header';
 import { LocalStorage } from './LocalStorage';
 import LoginView from './LoginView';
 import SpectatorView from './spectator/SpectatorView';
-import { Api } from './api/Api';
-import { PlayerSession } from './domain/PlayerSession';
 
 // TODO: Remove getting player logic
 const App: React.FC = () => {
