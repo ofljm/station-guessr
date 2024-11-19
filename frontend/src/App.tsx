@@ -38,7 +38,6 @@ const App: React.FC = () => {
 
   return (
     <BrowserRouter>
-      <Header />
       <Routes>
         <Route path="/" element={playerSession ? <GameView token={token!} gameSession={playerSession.gameSession} /> : <LoginView onLogin={handleLogin} />} />
         <Route path="/spectator" element={<SpectatorView />} />
