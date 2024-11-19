@@ -8,7 +8,6 @@ import { LocalStorage } from './LocalStorage';
 import LoginView from './LoginView';
 import SpectatorView from './spectator/SpectatorView';
 
-// TODO: Remove getting player logic
 const App: React.FC = () => {
   const [playerSession, setPlayerSession] = useState<PlayerSession | null>(null);
   const [token, setToken] = useState<string | null>(LocalStorage.getToken());
