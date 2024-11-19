@@ -3,7 +3,7 @@ import { BrowserRouter, Route, Routes } from 'react-router-dom';
 import { Api } from './api/Api';
 import { PlayerSession } from './domain/PlayerSession';
 import GameView from './game/GameView';
-import Header from './Header';
+import './App.css';
 import { LocalStorage } from './LocalStorage';
 import LoginView from './LoginView';
 import SpectatorView from './spectator/SpectatorView';
