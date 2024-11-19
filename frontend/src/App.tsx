@@ -13,7 +13,7 @@ const App: React.FC = () => {
   const [token, setToken] = useState<string | null>(LocalStorage.getToken());
 
   const handleLogin = (newPlayerToken: string) => {
-    localStorage.setItem('token', newPlayerToken);
+    LocalStorage.setToken(newPlayerToken);
     setToken(newPlayerToken);
     getSession(newPlayerToken);
   };
@@ -31,7 +31,7 @@ const App: React.FC = () => {
       .then(playerSession => setPlayerSession(playerSession))
       .catch(() => {
         console.log('No player session found, removing token from local storage.');
-        localStorage.removeItem('token');
+        LocalStorage.clearToken();
         setToken(null);
       });
   }
