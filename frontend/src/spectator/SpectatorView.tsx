@@ -27,7 +27,7 @@ const SpectatorView: React.FC = () => {
         <>
             <ul>
                 {players.map((player) => (
-                    <li key={player.name}>{player.name}: {player.correctGuesses ?? 0}</li>
+                    <li key={player.name}>{player.name}: {player.numberOfCorrectGuesses ?? 0}</li>
                 ))}
             </ul>
         </>
