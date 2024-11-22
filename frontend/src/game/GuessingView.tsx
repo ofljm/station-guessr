@@ -42,7 +42,7 @@ const GuessingView: React.FC<GuessingViewProps> = ({ gameSession, token }) => {
                 setCorrectlyGuessedStationNames(response.correctlyGuessedStationNames || []);
             })
             .catch(error => {
-                setGuessResult('Guess failed');
+                setGuessResult('There was some technical error while submitting the guess. Please try again or contact support.');
                 console.error('Guess failed:', error);
             });
     }
