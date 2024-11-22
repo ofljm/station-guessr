@@ -28,7 +28,7 @@ const GuessingView: React.FC<GuessingViewProps> = ({ gameSession, token }) => {
     function tickTime(gameSession: GameSession, setTimeRemaining: React.Dispatch<React.SetStateAction<number>>) {
         const elapsed = (Date.now() - gameSession.startTime) / 1000;
         const timeRemaining = Math.max(0, gameSession.duration - elapsed);
-        setTimeRemaining(Math.floor(timeRemaining));
+        setTimeRemaining(Math.ceil(timeRemaining));
     }
 
     async function handleGuess() {
