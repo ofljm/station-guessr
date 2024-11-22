@@ -7,7 +7,6 @@ type GuessingViewProps = {
     token: string
 }
 
-// TODO: After game start, theres some bullshit error idk fix it pls
 const GuessingView: React.FC<GuessingViewProps> = ({ gameSession, token }) => {
     const [timeRemaining, setTimeRemaining] = useState<number>(gameSession.duration);
     const [correctlyGuessedStationNames, setCorrectlyGuessedStationNames] = useState<string[]>(gameSession.correctlyGuessedStationNames);
