@@ -74,13 +74,18 @@ class PlayerSessionStore {
     public startGame(token: string, duration: number): GameSession | undefined {
         const playerSession = this.playerSessions.get(token);
         if (!playerSession) {
+            this.playerSessions
             return;
         }
-        playerSession.gameSession = {
+
+        const newGameSession: GameSession = {
             startTime: Date.now(),
             duration,
             correctlyGuessedStationIds: []
         };
+        playerSession.gameSession = newGameSession;
+
+        return newGameSession;
     }
 
     public updateSession(token: string, session: GameSession): void {
