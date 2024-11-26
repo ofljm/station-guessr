@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { Api } from './api/Api';
-import { TextField, Button, Typography, Container, Box } from '@mui/material';
+import { TextField, Button, Typography, Container, Box, Input } from '@mui/material';
 
 interface LoginViewProps {
   onLogin: (token: string) => void;
@@ -51,13 +51,12 @@ const LoginView: React.FC<LoginViewProps> = ({ onLogin }) => {
         <Typography variant="h6" gutterBottom>
           Wie heißt du?
         </Typography>
-        <TextField
+        <Input
+          sx={{ mb: 1 }}
           fullWidth
-          label={getRandomName()}
+          placeholder={getRandomName()}
           value={username}
           onChange={(e) => setUsername(e.target.value)}
-          variant="outlined"
-          margin="normal"
         />
         {error && (
           <Typography color="error" variant="body2">
