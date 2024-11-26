@@ -9,6 +9,23 @@ interface LoginViewProps {
 const LoginView: React.FC<LoginViewProps> = ({ onLogin }) => {
   const [username, setUsername] = useState<string>('');
   const [error, setError] = useState<string | undefined>();
+  const placeholderNames: string[] = [
+    "Anna Müller",
+    "Jonas Schneider",
+    "Laura Fischer",
+    "Lukas Weber",
+    "Sophie Bauer",
+    "Leon Wagner",
+    "Mia Schulz",
+    "Paul Becker",
+    "Emma Hoffmann",
+    "Max Richter"
+  ];
+
+  function getRandomName() {
+    const randomIndex = Math.floor(Math.random() * placeholderNames.length);
+    return placeholderNames[randomIndex];
+  }
 
   async function handleLogin(event: React.FormEvent) {
     event.preventDefault();
@@ -36,7 +53,7 @@ const LoginView: React.FC<LoginViewProps> = ({ onLogin }) => {
         </Typography>
         <TextField
           fullWidth
-          label="Your Name"
+          label={getRandomName()}
           value={username}
           onChange={(e) => setUsername(e.target.value)}
           variant="outlined"
