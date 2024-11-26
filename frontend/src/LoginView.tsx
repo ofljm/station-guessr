@@ -15,6 +15,7 @@ const LoginView: React.FC<LoginViewProps> = ({ onLogin }) => {
       const response = await Api.login(username);
       onLogin(response.token);
     } catch (error: unknown) {
+      console.error(error);
       setError(`Login failed: ${error}`);
     }
   }
