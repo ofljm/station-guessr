@@ -24,6 +24,12 @@ const LoginView: React.FC<LoginViewProps> = ({ onLogin }) => {
 
   return (
     <Container maxWidth="sm">
+      <Typography variant="h4" gutterBottom>
+        Wie gut kennst du die Haltestellen Frankfurts?
+      </Typography>
+      <Typography variant="body2" gutterBottom>
+        Gleich hast du 5 Minuten Zeit, so viele Frankfurter S-Bahn Haltestellen wie möglich zu erraten.
+      </Typography>
       <Box component="form" onSubmit={handleLogin} sx={{ mt: 4 }}>
         <Typography variant="h6" gutterBottom>
           Wie heißt du?
