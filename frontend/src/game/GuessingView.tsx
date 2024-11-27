@@ -48,10 +48,6 @@ const GuessingView: React.FC<GuessingViewProps> = ({ gameSession, token }) => {
     }
 
     async function handleGuess() {
-        if (isSubmitting) {
-            return;
-        }
-
         if (!currentGuess) {
             return;
         }
