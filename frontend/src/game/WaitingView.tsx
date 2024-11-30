@@ -1,30 +1,16 @@
+import { Button, Typography } from '@mui/material';
 import React from 'react';
-import { Api } from '../api/Api';
-import { GameSession } from '../domain/PlayerSession';
 
 interface WaitingViewProps {
-    token: string
-    onGameStart: (gameSession: GameSession) => void
+    onGameStart: () => void;
 }
 
-const WaitingView: React.FC<WaitingViewProps> = ({ token: playerToken, onGameStart }) => {
-
-    const [error, setError] = React.useState<Error | null>();
-
-    async function startGame() {
-        Api.startGame(playerToken)
-            .then(response => onGameStart({
-                duration: response.duration,
-                startTime: response.startTime,
-                correctlyGuessedStationNames: []
-            }))
-            .catch(error => setError(error));
-    }
+const WaitingView: React.FC<WaitingViewProps> = ({onGameStart}) => {
 
     return (
         <>
-            {error && <span>{error.message}</span>}
-            <button onClick={startGame}>Start</button>
+            <Typography>Sobald du auf "Start" drückst, beginnt deine Zeit. Viel Glück!</Typography>
+            <Button onClick={onGameStart}>Start</Button>
         </>
     );
 };
