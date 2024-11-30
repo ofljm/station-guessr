@@ -12,7 +12,6 @@ const WaitingView: React.FC<WaitingViewProps> = ({ token: playerToken, onGameSta
     const [error, setError] = React.useState<Error | null>();
 
     async function startGame() {
-        console.log('Starting game');
         Api.startGame(playerToken)
             .then(response => onGameStart({
                 duration: response.duration,
