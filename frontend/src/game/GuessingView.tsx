@@ -6,9 +6,10 @@ import { GameSession } from '../domain/PlayerSession';
 type GuessingViewProps = {
     gameSession: GameSession
     token: string
+    onGameOver: () => void
 }
 
-const GuessingView: React.FC<GuessingViewProps> = ({ gameSession, token }) => {
+const GuessingView: React.FC<GuessingViewProps> = ({ gameSession, token, onGameOver }) => {
     const [timeRemaining, setTimeRemaining] = useState<number>(gameSession.duration);
     const [correctlyGuessedStationNames, setCorrectlyGuessedStationNames] = useState<string[]>(gameSession.correctlyGuessedStationNames);
     const [currentGuess, setCurrentGuess] = useState<string | undefined>();
@@ -23,10 +24,11 @@ const GuessingView: React.FC<GuessingViewProps> = ({ gameSession, token }) => {
         }, 250);
         if (timeRemaining <= 0) {
             clearInterval(timer);
+            onGameOver();
         }
 
         return () => clearInterval(timer);
-    }, []);
+    }, [timeRemaining]);
 
     useEffect(() => {
         console.log(typingTimeout);

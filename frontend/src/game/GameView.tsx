@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { GameSession } from '../domain/PlayerSession';
 import GuessingView from './GuessingView';
 import WaitingView from './WaitingView';
+import GameOverView from './GameOverView';
 
 type GameViewProps = {
     token: string
@@ -10,12 +11,15 @@ type GameViewProps = {
 
 const GameView: React.FC<GameViewProps> = ({ token, gameSession }) => {
     const [updatedGameSession, setUpdatedGameSession] = useState<GameSession | undefined>(gameSession);
+    const [isGameOver, setIsGameOver] = useState<boolean>(false);
 
     return (
         <>
-            {updatedGameSession
-                ? <GuessingView gameSession={updatedGameSession} token={token} />
-                : <WaitingView token={token} onGameStart={setUpdatedGameSession} />}
+            {isGameOver && updatedGameSession
+                ? <GameOverView gameSession={updatedGameSession} />
+                : updatedGameSession
+                    ? <GuessingView gameSession={updatedGameSession} token={token} onGameOver={() => setIsGameOver(true)} />
+                    : <WaitingView token={token} onGameStart={setUpdatedGameSession} />}
         </>
     );
 };
