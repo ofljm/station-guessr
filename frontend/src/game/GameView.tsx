@@ -17,7 +17,6 @@ const GameView: React.FC<GameViewProps> = ({ token, gameSession }) => {
     const [error, setError] = useState<string>('');
 
     function startNewGame() {
-        console.log("Starting new game");
         Api.startGame(token)
             .then(response => setUpdatedGameSession({
                 duration: response.duration,
@@ -28,13 +27,18 @@ const GameView: React.FC<GameViewProps> = ({ token, gameSession }) => {
             .catch(error => setError(error));
     }
 
+    function handleGameOver(correctlyGuessedStationNames: string[]) {
+        setIsGameOver(true);
+        setUpdatedGameSession({...updatedGameSession!, correctlyGuessedStationNames});
+    }
+
     return (
         <>
             {error && <Typography >{error}</Typography>}
             {isGameOver && updatedGameSession
                 ? <GameOverView gameSession={updatedGameSession} onRestart={startNewGame} />
                 : updatedGameSession
-                    ? <GuessingView gameSession={updatedGameSession} token={token} onGameOver={() => setIsGameOver(true)} />
+                    ? <GuessingView gameSession={updatedGameSession} token={token} onGameOver={handleGameOver} />
                     : <WaitingView onGameStart={startNewGame} />}
         </>
     );
