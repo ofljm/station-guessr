@@ -15,5 +15,5 @@ export type CorrectGuess = {
 export type GameSession = {
     startTime: number  // Unix timestamp (milliseconds)
     duration: number   // seconds
-    correctGuesses: CorrectGuess[]
+    correctGuesses?: CorrectGuess[]
 }

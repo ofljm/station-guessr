@@ -36,7 +36,7 @@ const GameView: React.FC<GameViewProps> = ({ token, gameSession }) => {
         <>
             {error && <Typography >{error}</Typography>}
             {isGameOver && updatedGameSession
-                ? <GameOverView gameSession={updatedGameSession} onRestart={startNewGame} />
+                ? <GameOverView correctGuesses={updatedGameSession.correctGuesses || []} onRestart={startNewGame} />
                 : updatedGameSession
                     ? <GuessingView gameSession={updatedGameSession} token={token} onGameOver={handleGameOver} />
                     : <WaitingView onGameStart={startNewGame} />}

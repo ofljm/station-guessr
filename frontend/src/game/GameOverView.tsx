@@ -1,22 +1,19 @@
-import React from 'react';
-import { GameSession } from '../domain/PlayerSession';
 import { Button } from '@mui/material';
+import React from 'react';
+import { CorrectGuess } from '../domain/PlayerSession';
+import CorrectStationGuesses from './CorrectStationGuesses';
 
 type GameOverViewProps = {
-    gameSession: GameSession
+    correctGuesses: CorrectGuess[]
     onRestart: () => void
 }
 
-const GameOverView: React.FC<GameOverViewProps> = ({ gameSession, onRestart }) => {
+const GameOverView: React.FC<GameOverViewProps> = ({ correctGuesses, onRestart }) => {
     return (
         <div>
             <h2>Zeit abgelaufen!</h2>
-            <p>Du hast {gameSession.correctGuesses.length} Haltestellen korrekt erraten 🎉</p>
-            <ul>
-                {gameSession.correctGuesses.map((station) => (
-                    <li key={station}>{station}</li>
-                ))}
-            </ul>
+            <p>Du hast {correctGuesses.length} Haltestellen korrekt erraten 🎉</p>
+            <CorrectStationGuesses correctGuesses={correctGuesses} highlightNew={false}/>
             <Button onClick={onRestart} variant='contained'>Nochmal spielen</Button>
         </div>
     );

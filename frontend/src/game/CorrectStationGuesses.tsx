@@ -1,19 +1,21 @@
 import { List, ListItem, ListItemText } from '@mui/material';
 import React, { useEffect, useState } from 'react';
 import { CorrectGuess } from '../domain/PlayerSession';
-import './StationList.css';
+import './CorrectStationGuesses.css';
 
 interface CorrectStationGuessesProps {
     correctGuesses: CorrectGuess[];
+    hightlightNew: boolean;
 }
 
-const CorrectStationGuesses: React.FC<CorrectStationGuessesProps> = ({ correctGuesses }) => {
+const CorrectStationGuesses: React.FC<CorrectStationGuessesProps> = ({ correctGuesses, hightlightNew }) => {
     const [highlightedStation, setHighlightedStation] = useState<string | null>(null);
 
     useEffect(() => {
-        if(!correctGuesses || correctGuesses.length <= 0) {
+        if (!hightlightNew || !correctGuesses || correctGuesses.length <= 0) {
             return;
         }
+
         setHighlightedStation(correctGuesses[0].stationName ?? '');
         const timer = setTimeout(() => {
             setHighlightedStation(null);
@@ -23,7 +25,7 @@ const CorrectStationGuesses: React.FC<CorrectStationGuessesProps> = ({ correctGu
 
     return (
         <>
-            <List>
+            {correctGuesses.length > 0 && <List>
                 {correctGuesses
                     .sort((guessA, guessB) => guessB.timestamp - guessA.timestamp)
                     .map(guess => guess.stationName)
@@ -36,6 +38,7 @@ const CorrectStationGuesses: React.FC<CorrectStationGuessesProps> = ({ correctGu
                         </ListItem>
                     ))}
             </List>
+            }
         </>
     );
 };

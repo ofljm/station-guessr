@@ -2,7 +2,7 @@ import { Box, Button, Input } from '@mui/material';
 import React, { useEffect, useState } from 'react';
 import { Api } from '../api/Api';
 import { CorrectGuess, GameSession } from '../domain/PlayerSession';
-import CorrectStationGuesses from './StationList';
+import CorrectStationGuesses from './CorrectStationGuesses';
 
 type GuessingViewProps = {
     gameSession: GameSession
@@ -12,8 +12,8 @@ type GuessingViewProps = {
 
 const GuessingView: React.FC<GuessingViewProps> = ({ gameSession, token, onGameOver }) => {
     const [timeRemaining, setTimeRemaining] = useState<number>(gameSession.duration);
-    const [correctGuesses, setCorrectlyGuessedStationNames] = useState<CorrectGuess[]>(gameSession.correctGuesses);
-    const [currentGuess, setCurrentGuess] = useState<string | undefined>();
+    const [correctGuesses, setCorrectlyGuessedStationNames] = useState<CorrectGuess[] | undefined>(gameSession.correctGuesses);
+    const [currentGuess, setCurrentGuess] = useState<string>('');
     const [guessResult, setGuessResult] = useState<string>('');
     const [typingTimeout, setTypingTimeout] = useState<number | undefined>();
     const [isSubmitting, setIsSubmitting] = useState<boolean>(false);
@@ -25,7 +25,7 @@ const GuessingView: React.FC<GuessingViewProps> = ({ gameSession, token, onGameO
         }, 250);
         if (timeRemaining <= 0) {
             clearInterval(timer);
-            onGameOver(correctGuesses);
+            onGameOver(correctGuesses || []);
         }
 
         return () => clearInterval(timer);
@@ -93,7 +93,7 @@ const GuessingView: React.FC<GuessingViewProps> = ({ gameSession, token, onGameO
                     {'Raten'}
                 </Button>
                 {guessResult && <p style={{ color: "blue" }}>{guessResult}</p>}
-                <CorrectStationGuesses correctGuesses={correctGuesses} />
+                <CorrectStationGuesses correctGuesses={correctGuesses ?? []} hightlightNew={true} />
             </Box>
         </>
     );
