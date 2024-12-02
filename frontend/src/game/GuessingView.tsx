@@ -64,7 +64,6 @@ const GuessingView: React.FC<GuessingViewProps> = ({ gameSession, token, onGameO
                 if (result === 'correct') {
                     setCurrentGuess('');
                     setCorrectlyGuessedStationNames(response.correctlyGuessedStationNames || []);
-                    setNewestGuessedStation(currentGuess);
                 }
             })
             .catch(error => {
