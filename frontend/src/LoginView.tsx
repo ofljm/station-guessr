@@ -42,10 +42,13 @@ const LoginView: React.FC<LoginViewProps> = ({ onLogin }) => {
   return (
     <Container maxWidth="sm">
       <Typography variant="h4" gutterBottom>
-        Wie gut kennst du die Haltestellen Frankfurts?
+        Wie gut kennst du den S-Bahn Verkehr in der Umgebung?
+      </Typography>
+      <Typography variant="body1" gutterBottom>
+        Gleich hast du 5 Minuten Zeit, so viele S-Bahn Haltestellen im RMV Gebiet wie möglich zu erraten.
       </Typography>
       <Typography variant="body2" gutterBottom>
-        Gleich hast du 5 Minuten Zeit, so viele Frankfurter S-Bahn Haltestellen wie möglich zu erraten.
+        Enthaltene Städte: Frankfurt, Darmstadt, Hanau, Offenbach, Wiesbaden, Mainz und alles dazwischen.
       </Typography>
       <Box component="form" onSubmit={handleLogin} sx={{ mt: 4 }}>
         <Typography variant="h6" gutterBottom>
