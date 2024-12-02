@@ -17,6 +17,7 @@ const GuessingView: React.FC<GuessingViewProps> = ({ gameSession, token, onGameO
     const [guessResult, setGuessResult] = useState<string>('');
     const [typingTimeout, setTypingTimeout] = useState<number | undefined>();
     const [isSubmitting, setIsSubmitting] = useState<boolean>(false);
+    const [newestGuessedStation, setNewestGuessedStation] = useState<string | undefined>();
 
     useEffect(() => {
         tickTime(gameSession, setTimeRemaining);
@@ -63,8 +64,9 @@ const GuessingView: React.FC<GuessingViewProps> = ({ gameSession, token, onGameO
                 setGuessResult(result);
                 if (result === 'correct') {
                     setCurrentGuess('');
+                    setCorrectlyGuessedStationNames(response.correctlyGuessedStationNames || []);
+                    setNewestGuessedStation(currentGuess);
                 }
-                setCorrectlyGuessedStationNames(response.correctlyGuessedStationNames || []);
             })
             .catch(error => {
                 setGuessResult('There was some technical error while submitting the guess. Please try again or contact support.');
@@ -94,7 +96,7 @@ const GuessingView: React.FC<GuessingViewProps> = ({ gameSession, token, onGameO
                 </Button>
                 {guessResult && <p style={{ color: "blue" }}>{guessResult}</p>}
                 <StationList names={correctlyGuessedStationNames} />
-            </Box >
+            </Box>
         </>
     );
 };

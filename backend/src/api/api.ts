@@ -109,7 +109,7 @@ router.get('/player', (req: Request, res: Response<PlayerSessionResponse>): void
 
 router.post('/start', (req: Request, res: Response<GameStartResponse>): void => {
     const token = req.headers['token'] as string;
-    const durationInSeconds = 20;
+    const durationInSeconds = 300;
 
     const session = PlayerSessionStore.getInstance()
         .startGame(token, durationInSeconds);

@@ -1,0 +1,15 @@
+@keyframes highlight {
+    0% {
+        background-color: green;
+    }
+    50% {
+        background-color: green;
+    }
+    100% {
+        background-color: inherit;
+    }
+}
+
+.highlight {
+    animation: highlight 750ms;
+}
