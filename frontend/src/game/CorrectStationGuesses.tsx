@@ -5,14 +5,14 @@ import './CorrectStationGuesses.css';
 
 interface CorrectStationGuessesProps {
     correctGuesses: CorrectGuess[];
-    hightlightNew: boolean;
+    highlightNew: boolean;
 }
 
-const CorrectStationGuesses: React.FC<CorrectStationGuessesProps> = ({ correctGuesses, hightlightNew }) => {
+const CorrectStationGuesses: React.FC<CorrectStationGuessesProps> = ({ correctGuesses, highlightNew }) => {
     const [highlightedStation, setHighlightedStation] = useState<string | null>(null);
 
     useEffect(() => {
-        if (!hightlightNew || !correctGuesses || correctGuesses.length <= 0) {
+        if (!highlightNew || !correctGuesses || correctGuesses.length <= 0) {
             return;
         }
 

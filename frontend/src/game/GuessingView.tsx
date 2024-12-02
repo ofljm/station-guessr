@@ -93,7 +93,7 @@ const GuessingView: React.FC<GuessingViewProps> = ({ gameSession, token, onGameO
                     {'Raten'}
                 </Button>
                 {guessResult && <p style={{ color: "blue" }}>{guessResult}</p>}
-                <CorrectStationGuesses correctGuesses={correctGuesses ?? []} hightlightNew={true} />
+                <CorrectStationGuesses correctGuesses={correctGuesses ?? []} highlightNew={true} />
             </Box>
         </>
     );
