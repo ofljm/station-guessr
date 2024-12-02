@@ -878,6 +878,14 @@ export namespace Stations {
         return getStationsByIds(ids).map(station => station.displayName);
     }
 
+    export function getStationName(id: string): string {
+        const station = getStationById(id);
+        if(!station) {
+            throw new Error(`Station with id ${id} not found`);
+        }
+        return station.displayName;
+    }
+
     export function getStationByGuessableName(name: string): Station | undefined {
         return stations.find(station => station.guessableNames.includes(name));
     }

@@ -4,10 +4,15 @@ export type Player = {
     name: string
 }
 
+export type CorrectlyGuessedStation = {
+    id: string,
+    timestamp: number // Unix timestamp (milliseconds)
+}
+
 export type GameSession = {
     startTime: number  // Unix timestamp (milliseconds)
     duration: number   // seconds
-    correctlyGuessedStationIds: string[]
+    correctlyGuessedStations: CorrectlyGuessedStation[]
 }
 
 export type PlayerSession = {
@@ -81,7 +86,7 @@ class PlayerSessionStore {
         const newGameSession: GameSession = {
             startTime: Date.now(),
             duration,
-            correctlyGuessedStationIds: []
+            correctlyGuessedStations: []
         };
         playerSession.gameSession = newGameSession;
 

@@ -1,9 +1,9 @@
 import { Request, Response, Router } from 'express';
-import { checkGuess } from '../stations/guessChecker';
+import { checkGuess, CorrectGuessOutcome } from '../stations/guessChecker';
 import { Stations } from '../stations/stations';
-import PlayerSessionStore, { GameSession, PlayerSession } from '../storage/playerSessionStore';
+import PlayerSessionStore, { CorrectlyGuessedStation, GameSession, PlayerSession } from '../storage/playerSessionStore';
 import { GuessRequest, LoginRequest } from './Requests';
-import { GameStartResponse, GuessResponse, PlayerSessionResponse, PlayerStats, RegisterResponse } from './Responses';
+import { CorrectGuess, GameStartResponse, GuessResponse, PlayerSessionResponse, PlayerStats, RegisterResponse } from './Responses';
 
 const router = Router();
 
@@ -47,13 +47,21 @@ router.post('/guess', (req: Request<GuessRequest>, res: Response<GuessResponse>)
 
     const checkGuessOutcome = checkGuess(station, gameSession!);
     if (checkGuessOutcome.result === 'correct') {
-        gameSession.correctlyGuessedStationIds.push(checkGuessOutcome.station.id);
+        const correctlyGuessedStations = gameSession.correctlyGuessedStations;
+        correctlyGuessedStations.push({ id: checkGuessOutcome.station.id, timestamp: checkGuessOutcome.timestamp });
         playerSessionStore.updateSession(token, gameSession);
-        const correctlyGuessedStationNames = Stations.getStationNames(gameSession.correctlyGuessedStationIds);
+
+        const correctGuesses: CorrectGuess[] = correctlyGuessedStations.map(station => {
+            return {
+                stationName: Stations.getStationName(station.id),
+                timestamp: station.timestamp
+            };
+        });
+
         res.status(200).json({
             message: 'Guess request successful',
             result: checkGuessOutcome.result,
-            correctlyGuessedStationNames
+            correctGuesses
         });
         return;
     };
@@ -61,7 +69,6 @@ router.post('/guess', (req: Request<GuessRequest>, res: Response<GuessResponse>)
     res.status(200).json({
         message: 'Guess request successful but the guess itself was not.',
         result: checkGuessOutcome.result,
-        correctlyGuessedStationNames: Stations.getStationNames(gameSession.correctlyGuessedStationIds)
     });
 });
 
@@ -71,7 +78,7 @@ router.get('/player/all', (req: Request, res: Response<PlayerStats[]>): void => 
         .map(playerSession => ({
             name: playerSession.player.name,
             numberOfCorrectGuesses: playerSession.gameSession
-                ? playerSession.gameSession.correctlyGuessedStationIds?.length
+                ? playerSession.gameSession.correctlyGuessedStations?.length
                 : 0
         }))
 
@@ -102,7 +109,7 @@ router.get('/player', (req: Request, res: Response<PlayerSessionResponse>): void
         gameSession: gameSession && {
             startTime: gameSession.startTime,
             duration: gameSession.duration,
-            correctlyGuessedStationNames: Stations.getStationNames(gameSession.correctlyGuessedStationIds)
+            correctGuesses: mapCorrectGuesses(gameSession.correctlyGuessedStations)
         }
     });
 });
@@ -125,6 +132,15 @@ router.post('/start', (req: Request, res: Response<GameStartResponse>): void => 
         duration: durationInSeconds
     });
 });
+
+function mapCorrectGuesses(stations: CorrectlyGuessedStation[]) {
+    return stations.map(station => {
+        return {
+            stationName: Stations.getStationName(station.id),
+            timestamp: station.timestamp
+        };
+    });
+}
 
 export default router;
 

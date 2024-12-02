@@ -1,5 +1,5 @@
 import { GuessResult } from "../stations/guessChecker"
-import { GameSession, Player } from "../storage/playerSessionStore"
+import { CorrectlyGuessedStation } from "../storage/playerSessionStore"
 
 type Message = {
     message: string
@@ -9,9 +9,14 @@ export type RegisterResponse = Message & {
     token?: string
 }
 
+export type CorrectGuess = {
+    stationName: string
+    timestamp: number
+}
+
 export type GuessResponse = Message & {
     result?: GuessResult
-    correctlyGuessedStationNames?: string[]
+    correctGuesses?: CorrectGuess[]
 }
 
 export type PlayerStats = {
@@ -36,7 +41,7 @@ type PlayerResponse = {
 type GameSessionResponse = {
     startTime: number
     duration: number
-    correctlyGuessedStationNames: string[]
+    correctGuesses: CorrectGuess[]
 }
 
 export type PlayerSessionResponse = Message & {

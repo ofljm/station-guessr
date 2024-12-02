@@ -1,18 +1,18 @@
 import { Box, Button, Input } from '@mui/material';
 import React, { useEffect, useState } from 'react';
 import { Api } from '../api/Api';
-import { GameSession } from '../domain/PlayerSession';
-import StationList from './StationList';
+import { CorrectGuess, GameSession } from '../domain/PlayerSession';
+import CorrectStationGuesses from './StationList';
 
 type GuessingViewProps = {
     gameSession: GameSession
     token: string
-    onGameOver: (correctlyGuessedStationNames: string[]) => void
+    onGameOver: (correctGuesses: CorrectGuess[]) => void
 }
 
 const GuessingView: React.FC<GuessingViewProps> = ({ gameSession, token, onGameOver }) => {
     const [timeRemaining, setTimeRemaining] = useState<number>(gameSession.duration);
-    const [correctlyGuessedStationNames, setCorrectlyGuessedStationNames] = useState<string[]>(gameSession.correctlyGuessedStationNames);
+    const [correctGuesses, setCorrectlyGuessedStationNames] = useState<CorrectGuess[]>(gameSession.correctGuesses);
     const [currentGuess, setCurrentGuess] = useState<string | undefined>();
     const [guessResult, setGuessResult] = useState<string>('');
     const [typingTimeout, setTypingTimeout] = useState<number | undefined>();
@@ -25,7 +25,7 @@ const GuessingView: React.FC<GuessingViewProps> = ({ gameSession, token, onGameO
         }, 250);
         if (timeRemaining <= 0) {
             clearInterval(timer);
-            onGameOver(correctlyGuessedStationNames);
+            onGameOver(correctGuesses);
         }
 
         return () => clearInterval(timer);
@@ -63,7 +63,7 @@ const GuessingView: React.FC<GuessingViewProps> = ({ gameSession, token, onGameO
                 setGuessResult(result);
                 if (result === 'correct') {
                     setCurrentGuess('');
-                    setCorrectlyGuessedStationNames(response.correctlyGuessedStationNames || []);
+                    setCorrectlyGuessedStationNames(response.correctGuesses || []);
                 }
             })
             .catch(error => {
@@ -93,7 +93,7 @@ const GuessingView: React.FC<GuessingViewProps> = ({ gameSession, token, onGameO
                     {'Raten'}
                 </Button>
                 {guessResult && <p style={{ color: "blue" }}>{guessResult}</p>}
-                <StationList names={correctlyGuessedStationNames} />
+                <CorrectStationGuesses correctGuesses={correctGuesses} />
             </Box>
         </>
     );

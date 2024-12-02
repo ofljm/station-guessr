@@ -7,8 +7,13 @@ export type Player = {
     name: string
 }
 
+export type CorrectGuess = {
+    stationName: string
+    timestamp: number
+}
+
 export type GameSession = {
     startTime: number  // Unix timestamp (milliseconds)
     duration: number   // seconds
-    correctlyGuessedStationNames: string[]
+    correctGuesses: CorrectGuess[]
 }

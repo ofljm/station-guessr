@@ -9,9 +9,9 @@ const GameFinishedView: React.FC<AfterGameViewProps> = ({ gameSession }) => {
     return (
         <div>
             <h1>Spiel beendet!</h1>
-            <p>Du hast {gameSession.correctlyGuessedStationNames.length} Haltestellen erraten!</p>
+            <p>Du hast {gameSession.correctGuesses.length} Haltestellen erraten!</p>
             <ul>
-                {gameSession.correctlyGuessedStationNames
+                {gameSession.correctGuesses
                     .map((stationName, index) => <li key={index}>{stationName}</li>)}
             </ul>
         </div>

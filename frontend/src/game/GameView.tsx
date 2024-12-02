@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { GameSession } from '../domain/PlayerSession';
+import { CorrectGuess, GameSession } from '../domain/PlayerSession';
 import GuessingView from './GuessingView';
 import WaitingView from './WaitingView';
 import GameOverView from './GameOverView';
@@ -21,15 +21,15 @@ const GameView: React.FC<GameViewProps> = ({ token, gameSession }) => {
             .then(response => setUpdatedGameSession({
                 duration: response.duration,
                 startTime: response.startTime,
-                correctlyGuessedStationNames: []
+                correctGuesses: []
             }))
             .then(() => setIsGameOver(false))
             .catch(error => setError(error));
     }
 
-    function handleGameOver(correctlyGuessedStationNames: string[]) {
+    function handleGameOver(correctGuesses: CorrectGuess[]) {
         setIsGameOver(true);
-        setUpdatedGameSession({...updatedGameSession!, correctlyGuessedStationNames});
+        setUpdatedGameSession({...updatedGameSession!, correctGuesses: correctGuesses});
     }
 
     return (

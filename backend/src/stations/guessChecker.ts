@@ -4,20 +4,21 @@ import { Stations } from "./stations";
 
 export type GuessResult = 'correct' | 'incorrect' | 'alreadyGuessed';
 
-export interface CorrectGuess {
+export interface CorrectGuessOutcome {
     result: 'correct';
     station: Station;
+    timestamp: number;
 }
 
-export interface IncorrectGuess {
+export interface IncorrectGuessOutcome {
     result: 'incorrect';
 }
 
-export interface AlreadyGuessed {
+export interface AlreadyGuessedOutcome {
     result: 'alreadyGuessed';
 }
 
-export type GuessOutcome = CorrectGuess | IncorrectGuess | AlreadyGuessed;
+export type GuessOutcome = CorrectGuessOutcome | IncorrectGuessOutcome | AlreadyGuessedOutcome;
 
 const sanitizedStationNames: Record<string, string[]> = {};
 
@@ -33,10 +34,10 @@ export function checkGuess(guess: string, session: GameSession): GuessOutcome {
     if (!maybeFoundStation) {
         return { result: 'incorrect' };
     }
-    if (session.correctlyGuessedStationIds.includes(maybeFoundStation.id)) {
+    if (session.correctlyGuessedStations.map(station => station.id).includes(maybeFoundStation.id)) {
         return { result: 'alreadyGuessed' };
     }
-    return { result: 'correct', station: maybeFoundStation };
+    return { result: 'correct', station: maybeFoundStation, timestamp: Date.now() };
 }
 
 function isRecordEmpty(record: Record<string | number | symbol, unknown>): boolean {

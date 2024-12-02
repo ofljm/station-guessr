@@ -1,5 +1,5 @@
 import axios from "axios";
-import { PlayerSession } from "../domain/PlayerSession";
+import { CorrectGuess, PlayerSession } from "../domain/PlayerSession";
 import { PlayerStats } from "../domain/PlayerStats";
 import { handleApiError } from "./ApiErrorHandler";
 
@@ -13,7 +13,7 @@ export type GuessResult = 'correct' | 'incorrect' | 'alreadyGuessed' | 'invalid'
 type GuessResponse = {
     message: string
     result: GuessResult
-    correctlyGuessedStationNames?: string[]
+    correctGuesses?: CorrectGuess[]
 }
 
 export type GameStartResponse = {
