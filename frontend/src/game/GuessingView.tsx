@@ -2,6 +2,7 @@ import { Box, Button, Input } from '@mui/material';
 import React, { useEffect, useState } from 'react';
 import { Api } from '../api/Api';
 import { GameSession } from '../domain/PlayerSession';
+import StationList from './StationList';
 
 type GuessingViewProps = {
     gameSession: GameSession
@@ -92,11 +93,7 @@ const GuessingView: React.FC<GuessingViewProps> = ({ gameSession, token, onGameO
                     {'Raten'}
                 </Button>
                 {guessResult && <p style={{ color: "blue" }}>{guessResult}</p>}
-                <ul>
-                    {correctlyGuessedStationNames.map((station) => (
-                        <li key={station}>{station}</li>
-                    ))}
-                </ul>
+                <StationList names={correctlyGuessedStationNames} />
             </Box >
         </>
     );
