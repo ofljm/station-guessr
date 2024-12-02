@@ -38,7 +38,7 @@ const GuessingView: React.FC<GuessingViewProps> = ({ gameSession, token, onGameO
 
         setTypingTimeout(setTimeout(() => {
             handleGuess();
-        }, 300));
+        }, 230));
 
         return () => clearTimeout(typingTimeout);
     }, [currentGuess]);
@@ -58,7 +58,11 @@ const GuessingView: React.FC<GuessingViewProps> = ({ gameSession, token, onGameO
 
         Api.submitGuess(token, currentGuess)
             .then(response => {
-                setGuessResult(response.result);
+                const result = response.result;
+                setGuessResult(result);
+                if (result === 'correct') {
+                    setCurrentGuess('');
+                }
                 setCorrectlyGuessedStationNames(response.correctlyGuessedStationNames || []);
             })
             .catch(error => {
@@ -74,11 +78,12 @@ const GuessingView: React.FC<GuessingViewProps> = ({ gameSession, token, onGameO
             <Box onSubmit={handleGuess}>
                 <Input
                     type="text"
-                    placeholder="Your guess"
+                    value={currentGuess}
+                    placeholder="Haltestelle"
                     sx={{ mr: 1 }}
                     onChange={(e) => setCurrentGuess(e.target.value)}
                 />
-                <Button disabled={timeRemaining <= 0 || isSubmitting} onClick={handleGuess} variant="contained" size="medium">
+                <Button disabled={timeRemaining <= 0 || isSubmitting} onClick={handleGuess} variant="contained" size="large">
                     {'Raten'}
                 </Button>
                 {guessResult && <p style={{ color: "blue" }}>{guessResult}</p>}
