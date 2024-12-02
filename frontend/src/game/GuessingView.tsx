@@ -17,7 +17,6 @@ const GuessingView: React.FC<GuessingViewProps> = ({ gameSession, token, onGameO
     const [guessResult, setGuessResult] = useState<string>('');
     const [typingTimeout, setTypingTimeout] = useState<number | undefined>();
     const [isSubmitting, setIsSubmitting] = useState<boolean>(false);
-    const [newestGuessedStation, setNewestGuessedStation] = useState<string | undefined>();
 
     useEffect(() => {
         tickTime(gameSession, setTimeRemaining);
