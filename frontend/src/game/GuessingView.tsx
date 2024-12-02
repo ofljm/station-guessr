@@ -13,7 +13,7 @@ const GuessingView: React.FC<GuessingViewProps> = ({ gameSession, token, onGameO
     const [timeRemaining, setTimeRemaining] = useState<number>(gameSession.duration);
     const [correctlyGuessedStationNames, setCorrectlyGuessedStationNames] = useState<string[]>(gameSession.correctlyGuessedStationNames);
     const [currentGuess, setCurrentGuess] = useState<string | undefined>();
-    const [guessResult, setGuessResult] = useState<string | undefined>();
+    const [guessResult, setGuessResult] = useState<string>('');
     const [typingTimeout, setTypingTimeout] = useState<number | undefined>();
     const [isSubmitting, setIsSubmitting] = useState<boolean>(false);
 
@@ -72,6 +72,11 @@ const GuessingView: React.FC<GuessingViewProps> = ({ gameSession, token, onGameO
             .finally(() => setIsSubmitting(false));
     }
 
+    function handleInputChange(event: React.ChangeEvent<HTMLInputElement>) {
+        setCurrentGuess(event.target.value);
+        setGuessResult('');
+    }
+
     return (
         <>
             <p>Time remaining: {timeRemaining}</p>
@@ -81,7 +86,7 @@ const GuessingView: React.FC<GuessingViewProps> = ({ gameSession, token, onGameO
                     value={currentGuess}
                     placeholder="Haltestelle"
                     sx={{ mr: 1 }}
-                    onChange={(e) => setCurrentGuess(e.target.value)}
+                    onChange={handleInputChange}
                 />
                 <Button disabled={timeRemaining <= 0 || isSubmitting} onClick={handleGuess} variant="contained" size="large">
                     {'Raten'}

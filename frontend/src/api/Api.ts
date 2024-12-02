@@ -12,7 +12,7 @@ export type GuessResult = 'correct' | 'incorrect' | 'alreadyGuessed' | 'invalid'
 
 type GuessResponse = {
     message: string
-    result?: GuessResult
+    result: GuessResult
     correctlyGuessedStationNames?: string[]
 }
 
