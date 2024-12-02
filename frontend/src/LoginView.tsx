@@ -45,7 +45,7 @@ const LoginView: React.FC<LoginViewProps> = ({ onLogin }) => {
         Wie gut kennst du den S-Bahn Verkehr in der Umgebung?
       </Typography>
       <Typography variant="body1" gutterBottom>
-        Gleich hast du 5 Minuten Zeit, so viele S-Bahn Haltestellen im RMV Gebiet wie möglich zu erraten.
+        Gleich hast du 10 Minuten Zeit, so viele S-Bahn Haltestellen im RMV Gebiet wie möglich zu erraten.
       </Typography>
       <Typography variant="body2" gutterBottom>
         Das Gebiet enthält Frankfurt, Darmstadt, Hanau, Offenbach, Wiesbaden, Mainz und alles dazwischen.
