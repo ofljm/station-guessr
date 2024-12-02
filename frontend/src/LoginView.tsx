@@ -48,7 +48,7 @@ const LoginView: React.FC<LoginViewProps> = ({ onLogin }) => {
         Gleich hast du 5 Minuten Zeit, so viele S-Bahn Haltestellen im RMV Gebiet wie möglich zu erraten.
       </Typography>
       <Typography variant="body2" gutterBottom>
-        Enthaltene Städte: Frankfurt, Darmstadt, Hanau, Offenbach, Wiesbaden, Mainz und alles dazwischen.
+        Das Gebiet enthält Frankfurt, Darmstadt, Hanau, Offenbach, Wiesbaden, Mainz und alles dazwischen.
       </Typography>
       <Box component="form" onSubmit={handleLogin} sx={{ mt: 4 }}>
         <Typography variant="h6" gutterBottom>
