@@ -88,7 +88,7 @@ const GuessingView: React.FC<GuessingViewProps> = ({ gameSession, token, onGameO
                     sx={{ mr: 1 }}
                     onChange={handleInputChange}
                 />
-                <Button disabled={timeRemaining <= 0 || isSubmitting} onClick={handleGuess} variant="contained" size="large">
+                <Button disabled={timeRemaining <= 0 || isSubmitting} onClick={handleGuess} variant="contained" size="medium">
                     {'Raten'}
                 </Button>
                 {guessResult && <p style={{ color: "blue" }}>{guessResult}</p>}
