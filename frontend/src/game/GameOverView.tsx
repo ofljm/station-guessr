@@ -10,12 +10,12 @@ type GameOverViewProps = {
 
 const GameOverView: React.FC<GameOverViewProps> = ({ correctGuesses, onRestart }) => {
     return (
-        <div>
+        <>
             <h2>Zeit abgelaufen!</h2>
             <p>Du hast {correctGuesses.length} Haltestellen korrekt erraten 🎉</p>
             <CorrectStationGuesses correctGuesses={correctGuesses} highlightNew={false}/>
             <Button onClick={onRestart} variant='contained'>Nochmal spielen</Button>
-        </div>
+        </>
     );
 };
 
