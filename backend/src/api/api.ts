@@ -45,7 +45,7 @@ router.post('/guess', (req: Request<GuessRequest>, res: Response<GuessResponse>)
         return;
     }
 
-    const checkGuessOutcome = checkGuess(station, gameSession!);
+    const checkGuessOutcome = checkGuess(station, gameSession!.correctlyGuessedStations.map(station => station.id));
     if (checkGuessOutcome.result === 'correct') {
         const correctlyGuessedStations = gameSession.correctlyGuessedStations;
         correctlyGuessedStations.push({ id: checkGuessOutcome.station.id, timestamp: checkGuessOutcome.timestamp });

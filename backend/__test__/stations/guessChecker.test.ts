@@ -1,6 +1,5 @@
 import { expect, test } from '@jest/globals';
-import { checkGuess, CorrectGuess, GuessOutcome } from '../../src/stations/guessChecker';
-import { GameSession } from '../../src/storage/playerSessionStore';
+import { checkGuess, CorrectGuessOutcome, GuessOutcome } from '../../src/stations/guessChecker';
 
 const positiveTests = [
   { guess: 'Langen', expectedStationDisplayName: 'Langen (Hess)' }, // Normal case, single word
@@ -20,10 +19,9 @@ const positiveTests = [
 test.each(positiveTests)(
   'Guess $guess is expected to be correct and $expectedDisplayName.',
   ({ guess, expectedStationDisplayName }) => {
-    const session: GameSession = { correctlyGuessedStationIds: [], startTime: 0, duration: 0 };
-    const outcome: GuessOutcome = checkGuess(guess, session);
+    const outcome: GuessOutcome = checkGuess(guess, []);
     expect(outcome.result).toBe('correct');
-    const correctResult = outcome as CorrectGuess;
+    const correctResult = outcome as CorrectGuessOutcome;
     expect(correctResult.station.displayName).toBe(expectedStationDisplayName);
   }
 );
@@ -36,8 +34,7 @@ const negativeTests = [
 test.each(negativeTests)(
   'Guess $guess is expected to be incorrect.',
   ({ guess }) => {
-    const session: GameSession = { correctlyGuessedStationIds: [], startTime: 0, duration: 0 };
-    const outcome: GuessOutcome = checkGuess(guess, session);
+    const outcome: GuessOutcome = checkGuess(guess, []);
     expect(outcome.result).toBe('incorrect');
   }
 );

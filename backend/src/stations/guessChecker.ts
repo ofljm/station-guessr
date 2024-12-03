@@ -22,7 +22,7 @@ export type GuessOutcome = CorrectGuessOutcome | IncorrectGuessOutcome | Already
 
 const sanitizedStationNames: Record<string, string[]> = {};
 
-export function checkGuess(guess: string, session: GameSession): GuessOutcome {
+export function checkGuess(guess: string, correctlyGuessedStationIds: string[]): GuessOutcome {
     if (isRecordEmpty(sanitizedStationNames)) {
         Stations.stations.forEach((station) => {
             sanitizedStationNames[station.id] = station.guessableNames.map((name) => sanitize(name));
@@ -34,7 +34,7 @@ export function checkGuess(guess: string, session: GameSession): GuessOutcome {
     if (!maybeFoundStation) {
         return { result: 'incorrect' };
     }
-    if (session.correctlyGuessedStations.map(station => station.id).includes(maybeFoundStation.id)) {
+    if (correctlyGuessedStationIds.includes(maybeFoundStation.id)) {
         return { result: 'alreadyGuessed' };
     }
     return { result: 'correct', station: maybeFoundStation, timestamp: Date.now() };
