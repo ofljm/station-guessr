@@ -1,4 +1,4 @@
-import { Box, Button, Input } from '@mui/material';
+import { Box, Button, Input, Typography } from '@mui/material';
 import React, { useEffect, useState } from 'react';
 import { Api } from '../api/Api';
 import { CorrectGuess, GameSession } from '../domain/PlayerSession';
@@ -79,7 +79,7 @@ const GuessingView: React.FC<GuessingViewProps> = ({ gameSession, token, onGameO
 
     return (
         <>
-            <p>Time remaining: {timeRemaining}</p>
+            <Typography variant='h6' sx={{mb: 2}}>Übrige Zeit: {timeRemaining} Sekunden</Typography>
             <Box onSubmit={handleGuess}>
                 <Input
                     type="text"
