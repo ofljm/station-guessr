@@ -1,6 +1,6 @@
 import { Box, Button, Grid, Grid2, Input, Stack, Typography } from '@mui/material';
 import React, { useEffect, useState } from 'react';
-import { Api } from '../api/Api';
+import { Api, GuessResult } from '../api/Api';
 import { CorrectGuess, GameSession } from '../domain/PlayerSession';
 import CorrectStationGuesses from './CorrectStationGuesses';
 
@@ -14,7 +14,7 @@ const GuessingView: React.FC<GuessingViewProps> = ({ gameSession, token, onGameO
     const [timeRemaining, setTimeRemaining] = useState<number>(gameSession.duration);
     const [correctGuesses, setCorrectlyGuessedStationNames] = useState<CorrectGuess[] | undefined>(gameSession.correctGuesses);
     const [currentGuess, setCurrentGuess] = useState<string>('');
-    const [guessResult, setGuessResult] = useState<string>('');
+    const [message, setMessage] = useState<string>('');
     const [typingTimeout, setTypingTimeout] = useState<number | undefined>();
     const [isSubmitting, setIsSubmitting] = useState<boolean>(false);
 
@@ -59,23 +59,37 @@ const GuessingView: React.FC<GuessingViewProps> = ({ gameSession, token, onGameO
         Api.submitGuess(token, currentGuess)
             .then(response => {
                 const result = response.result;
-                setGuessResult(result);
                 if (result === 'correct') {
                     setCurrentGuess('');
                     setCorrectlyGuessedStationNames(response.correctGuesses || []);
-                }
+                };
+                setMessage(createResultMessage(result, currentGuess));
             })
             .catch(error => {
-                setGuessResult('There was some technical error while submitting the guess. Please try again or contact support.');
+                setMessage('Da gabs einen technischen Fehler, versuchs nochmal oder kontaktiere den Support.');
                 console.error('Guess failed:', error);
             })
             .finally(() => setIsSubmitting(false));
     }
 
-    function handleInputChange(event: React.ChangeEvent<HTMLInputElement>) {
+    function handleInputChange(event: React.ChangeEvent<HTMLInputElement>): void {
         setCurrentGuess(event.target.value);
-        setGuessResult('');
+        setMessage('');
     }
+
+    function createResultMessage(guessResult: GuessResult, guess: string): string {
+        if (guessResult === 'incorrect') {
+            return `${guess} ist nicht korrekt`
+        }
+        if (guessResult === 'correct') {
+            return `Du hast ${guess} erraten`
+        }
+        if (guessResult === 'alreadyGuessed') {
+            return `Du hast ${guess} bereits erraten`
+        }
+        return '';
+    }
+
 
     return (
         <>
@@ -92,7 +106,7 @@ const GuessingView: React.FC<GuessingViewProps> = ({ gameSession, token, onGameO
                     <Button disabled={timeRemaining <= 0 || isSubmitting} onClick={handleGuess} variant="contained" size="medium">
                         {'Raten'}
                     </Button>
-                    {guessResult && <Typography>{guessResult}</Typography>}
+                    {message && <Typography>{message}</Typography>}
                 </Stack>
                 <CorrectStationGuesses correctGuesses={correctGuesses ?? []} highlightNew={true} />
             </Box>
