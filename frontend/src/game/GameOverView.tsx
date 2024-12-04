@@ -1,4 +1,4 @@
-import { Button } from '@mui/material';
+import { Box, Button, List, ListItem, Typography } from '@mui/material';
 import React from 'react';
 import { CorrectGuess } from '../domain/PlayerSession';
 import CorrectStationGuesses from './CorrectStationGuesses';
@@ -11,10 +11,18 @@ type GameOverViewProps = {
 const GameOverView: React.FC<GameOverViewProps> = ({ correctGuesses, onRestart }) => {
     return (
         <>
-            <h2>Zeit abgelaufen!</h2>
-            <p>Du hast {correctGuesses.length} Haltestellen korrekt erraten 🎉</p>
-            <CorrectStationGuesses correctGuesses={correctGuesses} highlightNew={false}/>
-            <Button onClick={onRestart} variant='contained'>Nochmal spielen</Button>
+            <Typography textAlign={'center'} variant={'h4'}>Zeit abgelaufen!</Typography>
+            <List>
+                <ListItem>
+                    <Typography variant='body2'>Du hast {correctGuesses.length} Haltestellen korrekt erraten 🎉</Typography>
+                </ListItem>
+                <ListItem>
+                    <CorrectStationGuesses correctGuesses={correctGuesses} highlightNew={false} />
+                </ListItem>
+                <ListItem>
+                    <Button onClick={onRestart} variant='contained'>Nochmal spielen</Button>
+                </ListItem>
+            </List>
         </>
     );
 };

@@ -1,4 +1,4 @@
-import { List, ListItem, ListItemText } from '@mui/material';
+import { Box, Grid2, Typography } from '@mui/material';
 import React, { useEffect, useState } from 'react';
 import { CorrectGuess } from '../domain/PlayerSession';
 import './CorrectStationGuesses.css';
@@ -25,19 +25,23 @@ const CorrectStationGuesses: React.FC<CorrectStationGuessesProps> = ({ correctGu
 
     return (
         <>
-            {correctGuesses.length > 0 && <List>
+            {correctGuesses.length > 0 && <Grid2 container spacing={1}>
                 {correctGuesses
                     .sort((guessA, guessB) => guessB.timestamp - guessA.timestamp)
                     .map(guess => guess.stationName)
                     .map((station, index) => (
-                        <ListItem
+                        <Typography
                             key={index}
+                            fontWeight={'bold'}
+                            sx={{ border: 1, borderRadius: 1, padding: 1, borderBlock: '', background: 'azure'}}
+                            variant='body1'
+                            boxShadow={1}
                             className={station === highlightedStation ? 'highlight' : ''}
                         >
-                            <ListItemText primary={station} />
-                        </ListItem>
+                            {station}
+                        </Typography>
                     ))}
-            </List>
+            </Grid2>
             }
         </>
     );

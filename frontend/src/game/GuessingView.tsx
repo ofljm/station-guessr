@@ -95,7 +95,7 @@ const GuessingView: React.FC<GuessingViewProps> = ({ gameSession, token, onGameO
         <>
             <Typography variant='h6' align='center' sx={{ mb: 2 }}>Übrige Zeit: {timeRemaining} Sekunden</Typography>
             <Box onSubmit={handleGuess}>
-                <Stack direction='row' spacing={2} alignItems='center'>
+                <Stack direction='row' spacing={2} alignItems='center' sx={{marginBottom: 2}}>
                     <Input
                         type="text"
                         value={currentGuess}
