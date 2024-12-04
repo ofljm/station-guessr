@@ -1,4 +1,4 @@
-import { Box, Button, Input, Typography } from '@mui/material';
+import { Box, Button, Grid, Grid2, Input, Stack, Typography } from '@mui/material';
 import React, { useEffect, useState } from 'react';
 import { Api } from '../api/Api';
 import { CorrectGuess, GameSession } from '../domain/PlayerSession';
@@ -79,19 +79,21 @@ const GuessingView: React.FC<GuessingViewProps> = ({ gameSession, token, onGameO
 
     return (
         <>
-            <Typography variant='h6' sx={{mb: 2}}>Übrige Zeit: {timeRemaining} Sekunden</Typography>
+            <Typography variant='h6' align='center' sx={{ mb: 2 }}>Übrige Zeit: {timeRemaining} Sekunden</Typography>
             <Box onSubmit={handleGuess}>
-                <Input
-                    type="text"
-                    value={currentGuess}
-                    placeholder="Haltestelle"
-                    sx={{ mr: 1 }}
-                    onChange={handleInputChange}
-                />
-                <Button disabled={timeRemaining <= 0 || isSubmitting} onClick={handleGuess} variant="contained" size="medium">
-                    {'Raten'}
-                </Button>
-                {guessResult && <p style={{ color: "blue" }}>{guessResult}</p>}
+                <Stack direction='row' spacing={2} alignItems='center'>
+                    <Input
+                        type="text"
+                        value={currentGuess}
+                        placeholder="Haltestelle"
+                        sx={{ mr: 1 }}
+                        onChange={handleInputChange}
+                    />
+                    <Button disabled={timeRemaining <= 0 || isSubmitting} onClick={handleGuess} variant="contained" size="medium">
+                        {'Raten'}
+                    </Button>
+                    {guessResult && <Typography>{guessResult}</Typography>}
+                </Stack>
                 <CorrectStationGuesses correctGuesses={correctGuesses ?? []} highlightNew={true} />
             </Box>
         </>
