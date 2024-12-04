@@ -32,7 +32,6 @@ const GuessingView: React.FC<GuessingViewProps> = ({ gameSession, token, onGameO
     }, [timeRemaining]);
 
     useEffect(() => {
-        console.log(typingTimeout);
         if (typingTimeout) {
             clearTimeout(typingTimeout);
         }

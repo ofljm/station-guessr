@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { CorrectGuess, GameSession } from '../domain/PlayerSession';
 import GuessingView from './GuessingView';
 import WaitingView from './WaitingView';
@@ -29,17 +29,15 @@ const GameView: React.FC<GameViewProps> = ({ token, gameSession }) => {
 
     function handleGameOver(correctGuesses: CorrectGuess[]) {
         setIsGameOver(true);
-        setUpdatedGameSession({...updatedGameSession!, correctGuesses: correctGuesses});
+        setUpdatedGameSession({ ...updatedGameSession!, correctGuesses: correctGuesses });
     }
 
     return (
         <>
             {error && <Typography >{error}</Typography>}
-            {isGameOver && updatedGameSession
-                ? <GameOverView correctGuesses={updatedGameSession.correctGuesses || []} onRestart={startNewGame} />
-                : updatedGameSession
-                    ? <GuessingView gameSession={updatedGameSession} token={token} onGameOver={handleGameOver} />
-                    : <WaitingView onGameStart={startNewGame} />}
+            {!updatedGameSession && <WaitingView onGameStart={startNewGame} />}
+            {updatedGameSession && !isGameOver && <GuessingView gameSession={updatedGameSession} token={token} onGameOver={handleGameOver} />}
+            {isGameOver && <GameOverView correctGuesses={updatedGameSession?.correctGuesses || []} onRestart={startNewGame} />}
         </>
     );
 };
