@@ -1,4 +1,4 @@
-import { Box, Button, Grid, Grid2, Input, Stack, Typography } from '@mui/material';
+import { Box, Button, Input, Stack, Typography } from '@mui/material';
 import React, { useEffect, useState } from 'react';
 import { Api, GuessResult } from '../api/Api';
 import { CorrectGuess, GameSession } from '../domain/PlayerSession';

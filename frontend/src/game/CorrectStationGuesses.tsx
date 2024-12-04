@@ -1,4 +1,4 @@
-import { Box, Grid2, Typography } from '@mui/material';
+import { Grid2, Typography } from '@mui/material';
 import React, { useEffect, useState } from 'react';
 import { CorrectGuess } from '../domain/PlayerSession';
 import './CorrectStationGuesses.css';

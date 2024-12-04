@@ -1,10 +1,10 @@
-import React, { useEffect, useState } from 'react';
+import { Typography } from '@mui/material';
+import React, { useState } from 'react';
+import { Api } from '../api/Api';
 import { CorrectGuess, GameSession } from '../domain/PlayerSession';
+import GameOverView from './GameOverView';
 import GuessingView from './GuessingView';
 import WaitingView from './WaitingView';
-import GameOverView from './GameOverView';
-import { Api } from '../api/Api';
-import { Typography } from '@mui/material';
 
 type GameViewProps = {
     token: string

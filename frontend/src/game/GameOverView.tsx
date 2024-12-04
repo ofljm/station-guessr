@@ -1,4 +1,4 @@
-import { Box, Button, List, ListItem, Typography } from '@mui/material';
+import { Button, List, ListItem, Typography } from '@mui/material';
 import React from 'react';
 import { CorrectGuess } from '../domain/PlayerSession';
 import CorrectStationGuesses from './CorrectStationGuesses';
