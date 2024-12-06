@@ -40,39 +40,42 @@ const LoginView: React.FC<LoginViewProps> = ({ onLogin }) => {
   }
 
   return (
-    <Container maxWidth="sm">
-      <Typography variant="h4" gutterBottom>
-        Wie gut kennst du den S-Bahn Verkehr in der Umgebung?
-      </Typography>
-      <Typography variant="body1" gutterBottom>
-        Gleich hast du 10 Minuten Zeit, so viele S-Bahn Haltestellen im RMV Gebiet wie möglich zu erraten.
-      </Typography>
-      <Typography variant="body2" gutterBottom>
-        Das Gebiet enthält Frankfurt, Darmstadt, Hanau, Offenbach, Wiesbaden, Mainz und alles dazwischen.
-      </Typography>
-      <Box component="form" onSubmit={handleLogin} sx={{ mt: 4 }}>
-        <Typography variant="h6" gutterBottom>
-          Wie heißt du?
+    <>
+      <Container maxWidth="xs" sx={{ marginBottom: '50px' }}>
+        <img src="/stationGuessr.png" alt="Logo" />
+      </Container>
+      <Container maxWidth="md">
+        <Typography variant="h4" gutterBottom>
+          Wie gut kennst du den S-Bahn Verkehr in der Umgebung?
         </Typography>
-        <Input
-          sx={{ mb: 1 }}
-          fullWidth
-          placeholder={getRandomName()}
-          value={username}
-          onChange={(e) => setUsername(e.target.value)}
-        />
-        {error && (
-          <Typography color="error" variant="body2">
-            {error}
+        <Typography variant="body1" gutterBottom>
+          Gleich hast du 10 Minuten Zeit, so viele S-Bahn Haltestellen im RMV Gebiet wie möglich zu erraten.
+        </Typography>
+        <Typography variant="body2" gutterBottom>
+          Das Gebiet enthält Frankfurt, Darmstadt, Hanau, Offenbach, Wiesbaden, Mainz und alles dazwischen.
+        </Typography>
+        <Box component="form" onSubmit={handleLogin} sx={{ mt: 4 }}>
+          <Typography variant="h6" gutterBottom>
+            Wie heißt du?
           </Typography>
-        )}
-        <Button type="submit" variant="contained" color="primary">
-          <Typography variant="button" fontWeight="bold">
+          <Input
+            sx={{ mb: 1 }}
+            fullWidth
+            placeholder={getRandomName()}
+            value={username}
+            onChange={(e) => setUsername(e.target.value)}
+          />
+          {error && (
+            <Typography color="error" variant="body2">
+              {error}
+            </Typography>
+          )}
+          <Button type="submit" variant="contained" color="primary">
             Mitmachen
-          </Typography>
-        </Button>
-      </Box>
-    </Container>
+          </Button>
+        </Box>
+      </Container>
+    </>
   );
 };
 
