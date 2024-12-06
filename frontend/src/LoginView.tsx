@@ -1,6 +1,7 @@
-import { Box, Button, Container, Input, Typography } from '@mui/material';
+import { Box, Button, Container, Input, InputLabel, TextField, Typography } from '@mui/material';
 import React, { useState } from 'react';
 import { Api } from './api/Api';
+import { Form } from 'react-router-dom';
 
 interface LoginViewProps {
   onLogin: (token: string) => void;
@@ -54,13 +55,10 @@ const LoginView: React.FC<LoginViewProps> = ({ onLogin }) => {
         <Typography variant="body2" gutterBottom>
           Das Gebiet enthält Frankfurt, Darmstadt, Hanau, Offenbach, Wiesbaden, Mainz und alles dazwischen.
         </Typography>
-        <Box component="form" onSubmit={handleLogin} sx={{ mt: 4 }}>
-          <Typography variant="h6" gutterBottom>
-            Wie heißt du?
-          </Typography>
-          <Input
-            sx={{ mb: 1 }}
-            fullWidth
+        <Box component='form' onSubmit={handleLogin} display={'flex'} alignItems={'flex-end'} gap={1}>
+          <TextField
+            variant="standard"
+            label="Dein Name"
             placeholder={getRandomName()}
             value={username}
             onChange={(e) => setUsername(e.target.value)}
