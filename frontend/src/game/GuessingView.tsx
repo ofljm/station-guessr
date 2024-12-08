@@ -1,4 +1,4 @@
-import { Box, Button, Input, Stack, Typography } from '@mui/material';
+import { Box, Button, CircularProgress, Input, Stack, Typography } from '@mui/material';
 import React, { useEffect, useState } from 'react';
 import { Api, GuessResult } from '../api/Api';
 import { CorrectGuess, GameSession } from '../domain/PlayerSession';
@@ -56,6 +56,9 @@ const GuessingView: React.FC<GuessingViewProps> = ({ gameSession, token, onGameO
 
         setIsSubmitting(true);
 
+        // articifially delay the submission to prevent spamming
+        await new Promise(resolve => setTimeout(resolve, 500));
+        
         Api.submitGuess(token, currentGuess)
             .then(response => {
                 const result = response.result;
@@ -106,6 +109,7 @@ const GuessingView: React.FC<GuessingViewProps> = ({ gameSession, token, onGameO
                     <Button disabled={timeRemaining <= 0 || isSubmitting} onClick={handleGuess} variant="contained" size="medium">
                         {'Raten'}
                     </Button>
+                    {isSubmitting && <CircularProgress size={28}/>}
                 </Stack>
                 <Box component="section" sx={{height: '40px' }}>
                     {message && <Typography>{message}</Typography>}
