@@ -148,7 +148,7 @@ export namespace Stations {
             "id": "s-20",
             "displayName": "Flörsheim (Main)",
             "guessableNames": [
-                "Flörsheim (Main)"
+                "Flörsheim"
             ]
         },
         {
