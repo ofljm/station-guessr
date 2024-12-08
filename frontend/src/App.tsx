@@ -41,6 +41,7 @@ const App: React.FC = () => {
         console.log('No player session found, removing token from local storage.');
         LocalStorage.clearToken();
         setToken(null);
+        setIsLoading(false);
       });
   }
 
