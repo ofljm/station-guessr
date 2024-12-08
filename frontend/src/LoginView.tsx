@@ -42,10 +42,17 @@ const LoginView: React.FC<LoginViewProps> = ({ onLogin }) => {
 
   return (
     <>
-      <Container maxWidth="xs" sx={{ marginBottom: '50px' }}>
-        <img src="/stationGuessr.png" alt="Logo" />
+      <Container
+        component={"img"}
+        sx={{
+          display: 'flex',
+          maxWidth: { xs: '80%', sm: '50%' },
+          marginBottom: 2
+        }}
+        src="/stationGuessr.png" alt="StationGuessr Logo"
+      >
       </Container>
-      <Container maxWidth="md">
+      <Box maxWidth="md">
         <Typography variant="h4" gutterBottom>
           Wie gut kennst du den S-Bahn Verkehr in der Umgebung?
         </Typography>
@@ -72,7 +79,7 @@ const LoginView: React.FC<LoginViewProps> = ({ onLogin }) => {
             Mitmachen
           </Button>
         </Box>
-      </Container>
+      </Box>
     </>
   );
 };
