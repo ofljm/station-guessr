@@ -56,9 +56,6 @@ const GuessingView: React.FC<GuessingViewProps> = ({ gameSession, token, onGameO
 
         setIsSubmitting(true);
 
-        // articifially delay the submission to prevent spamming
-        await new Promise(resolve => setTimeout(resolve, 500));
-        
         Api.submitGuess(token, currentGuess)
             .then(response => {
                 const result = response.result;
