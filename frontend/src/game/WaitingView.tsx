@@ -1,19 +1,19 @@
-import { Box, Button, Container, Typography } from '@mui/material';
+import { Button, Container, Typography } from '@mui/material';
 import React from 'react';
+import GameLogo from '../components/GameLogo';
 
 interface WaitingViewProps {
     onGameStart: () => void;
 }
 
-const WaitingView: React.FC<WaitingViewProps> = ({onGameStart}) => {
+const WaitingView: React.FC<WaitingViewProps> = ({ onGameStart }) => {
 
     return (
-        <Box display="flex" justifyContent="center">
-            <Container maxWidth={'sm'} style={{ textAlign: 'center' }}>
-                <Typography gutterBottom>Sobald du "Start" drückst, beginnt deine Zeit. Viel Glück!</Typography>
-                <Button variant="contained" onClick={onGameStart}>Start</Button>
-            </Container>
-        </Box>
+        <Container>
+            <GameLogo />
+            <Typography gutterBottom>Sobald du "Start" drückst, beginnt deine Zeit. Viel Glück!</Typography>
+            <Button variant="contained" onClick={onGameStart}>Start</Button>
+        </Container>
     );
 };
 
