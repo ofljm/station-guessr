@@ -1,6 +1,8 @@
 import React, { useEffect, useState } from 'react';
 import { PlayerStats } from '../domain/PlayerStats';
 import { Api } from '../api/Api';
+import LinearProgress from '@mui/material/LinearProgress';
+import { Box, Container, List, ListItem, Stack, Typography } from '@mui/material';
 
 const SpectatorView: React.FC = () => {
     const [players, setUsers] = useState<PlayerStats[]>([]);
@@ -24,13 +26,18 @@ const SpectatorView: React.FC = () => {
     }, []);
 
     return (
-        <>
-            <ul>
-                {players.map((player) => (
-                    <li key={player.name}>{player.name}: {player.numberOfCorrectGuesses ?? 0}</li>
-                ))}
-            </ul>
-        </>
+        <Container>
+            <Typography variant="h4" marginBottom={2}>Aktueller Stand</Typography>
+            {players.map((player) => (
+                <Box marginBottom={2} key={player.name}>
+                    <Typography variant="body1">{player.name}</Typography>
+                    <Stack>
+                        <LinearProgress variant="determinate" value={(player.numberOfCorrectGuesses ?? 0) / 113 * 100} />
+                        <Typography>{player.numberOfCorrectGuesses ?? 0}</Typography>
+                    </Stack>
+                </Box>
+            ))}
+        </Container>
     );
 };
 
