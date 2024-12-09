@@ -41,7 +41,7 @@ const LoginView: React.FC<LoginViewProps> = ({ onLogin }) => {
   }
 
   return (
-    <>
+    <Container>
       <Container
         component={"img"}
         sx={{
@@ -80,7 +80,7 @@ const LoginView: React.FC<LoginViewProps> = ({ onLogin }) => {
           </Button>
         </Box>
       </Box>
-    </>
+    </Container>
   );
 };
 
