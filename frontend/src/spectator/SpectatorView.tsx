@@ -1,8 +1,8 @@
-import React, { useEffect, useState } from 'react';
-import { PlayerStats } from '../domain/PlayerStats';
-import { Api } from '../api/Api';
+import { Box, Container, Stack, Typography } from '@mui/material';
 import LinearProgress from '@mui/material/LinearProgress';
-import { Box, Container, List, ListItem, Stack, Typography } from '@mui/material';
+import React, { useEffect, useState } from 'react';
+import { Api } from '../api/Api';
+import { PlayerStats } from '../domain/PlayerStats';
 
 const SpectatorView: React.FC = () => {
     const [players, setUsers] = useState<PlayerStats[]>([]);
