@@ -1,4 +1,4 @@
-import { Box, Button, TextField, Typography } from '@mui/material';
+import { Box, Button, CircularProgress, TextField, Typography } from '@mui/material';
 import React, { useState } from 'react';
 import { Api } from '../api/Api';
 
@@ -9,6 +9,7 @@ type LoginFormProps = {
 const LoginForm: React.FC<LoginFormProps> = ({ onLogin }) => {
     const [username, setUsername] = useState<string>('');
     const [error, setError] = useState<string | undefined>();
+    const [isLoading, setIsLoading] = useState<boolean>(false);
 
     const placeholderNames: string[] = [
         "Anna Müller",
@@ -23,14 +24,21 @@ const LoginForm: React.FC<LoginFormProps> = ({ onLogin }) => {
         "Max Richter"
     ];
 
-    function getRandomName() {
+    function getRandomName(): string {
         const randomIndex = Math.floor(Math.random() * placeholderNames.length);
         return placeholderNames[randomIndex];
     }
 
-    async function handleLogin(event: React.FormEvent) {
+    function handleChangePlayerName(e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>): void {
+        error && setError('');
+        return setUsername(e.target.value);
+    }
+
+    async function handleLogin(event: React.FormEvent): Promise<void> {
         event.preventDefault();
         setError('');
+        setIsLoading(true);
+
         try {
             const response = await Api.login(username);
             onLogin(response.token);
@@ -38,6 +46,7 @@ const LoginForm: React.FC<LoginFormProps> = ({ onLogin }) => {
             console.error(error);
             setError(`Login failed: ${error}`);
         }
+        setIsLoading(false);
     }
 
     return (
@@ -47,18 +56,20 @@ const LoginForm: React.FC<LoginFormProps> = ({ onLogin }) => {
                 label="Dein Name"
                 placeholder={getRandomName()}
                 value={username}
-                onChange={(e) => setUsername(e.target.value)}
+                onChange={(e) => handleChangePlayerName(e)}
             />
+            <Button type="submit" variant="contained" color="primary" sx={{ minWidth: 120 }} disabled={isLoading || !username}>
+                {isLoading ? <CircularProgress sx={{ marginLeft: 1 }} size={24} /> : 'Mitmachen'}
+            </Button>
+
             {error && (
                 <Typography color="error" variant="body2">
                     {error}
                 </Typography>
             )}
-            <Button type="submit" variant="contained" color="primary">
-                Mitmachen
-            </Button>
         </Box>
     );
+
 };
 
 export default LoginForm;
