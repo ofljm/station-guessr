@@ -1,8 +1,8 @@
-import { Box, Button, Container, TextField, Typography } from '@mui/material';
-import React, { useState } from 'react';
-import LoginForm from './components/LoginForm';
+import { Container } from '@mui/material';
+import React from 'react';
 import GameDescription from './components/GameDescription';
 import GameLogo from './components/GameLogo';
+import LoginForm from './components/LoginForm';
 
 interface LoginViewProps {
   onLogin: (token: string) => void;
