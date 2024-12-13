@@ -69,7 +69,8 @@ export namespace Stations {
             "id": "s-9",
             "displayName": "Dietzenbach Bahnhof",
             "guessableNames": [
-                "Dietzenbach Bahnhof"
+                "Dietzenbach Bahnhof",
+                "Dietzenbach"
             ]
         },
         {
@@ -91,7 +92,8 @@ export namespace Stations {
             "id": "s-12",
             "displayName": "Dreieich-Buchschlag",
             "guessableNames": [
-                "Dreieich-Buchschlag"
+                "Dreieich-Buchschlag",
+                "Dreieich"
             ]
         },
         {
@@ -880,7 +882,7 @@ export namespace Stations {
 
     export function getStationName(id: string): string {
         const station = getStationById(id);
-        if(!station) {
+        if (!station) {
             throw new Error(`Station with id ${id} not found`);
         }
         return station.displayName;
