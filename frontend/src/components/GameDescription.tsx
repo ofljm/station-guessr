@@ -4,7 +4,7 @@ import React from 'react';
 const GameDescription: React.FC = () => {
     return (
         <>
-            <Typography variant="h4" gutterBottom>
+            <Typography textAlign="center" variant="h4" gutterBottom>
                 Wie gut kennst du den S-Bahn Verkehr in der Umgebung?
             </Typography>
             <Typography variant="body1" gutterBottom>
