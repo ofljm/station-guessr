@@ -1,4 +1,4 @@
-import { Grid2, Typography } from '@mui/material';
+import { Grid2, Typography, useMediaQuery, useTheme } from '@mui/material';
 import React, { useEffect, useState } from 'react';
 import { CorrectGuess } from '../domain/PlayerSession';
 import './CorrectStationGuesses.css';
@@ -10,6 +10,8 @@ interface CorrectStationGuessesProps {
 
 const CorrectStationGuesses: React.FC<CorrectStationGuessesProps> = ({ correctGuesses, highlightNew }) => {
     const [highlightedStation, setHighlightedStation] = useState<string | null>(null);
+    const theme = useTheme();
+    const isMobile = useMediaQuery(theme.breakpoints.down('sm'));
 
     useEffect(() => {
         if (!highlightNew || !correctGuesses || correctGuesses.length <= 0) {
@@ -23,9 +25,10 @@ const CorrectStationGuesses: React.FC<CorrectStationGuessesProps> = ({ correctGu
         return () => clearTimeout(timer);
     }, [correctGuesses]);
 
+
     return (
         <>
-            {correctGuesses.length > 0 && <Grid2 container spacing={1}>
+            {correctGuesses.length > 0 && <Grid2 container spacing={1} direction={isMobile ? 'column' : 'row'}>
                 {correctGuesses
                     .sort((guessA, guessB) => guessB.timestamp - guessA.timestamp)
                     .map(guess => guess.stationName)
