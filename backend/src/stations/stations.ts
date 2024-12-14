@@ -256,7 +256,8 @@ export namespace Stations {
             "displayName": "Frankfurt Konstablerwache",
             "guessableNames": [
                 "Frankfurt Konstablerwache",
-                "Konstablerwache"
+                "Konstablerwache",
+                "Konsti"
             ]
         },
         {
