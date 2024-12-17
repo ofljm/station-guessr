@@ -103,10 +103,9 @@ const GuessingView: React.FC<GuessingViewProps> = ({ gameSession, token, onGameO
                         sx={{ mr: 1 }}
                         onChange={handleInputChange}
                     />
-                    <Button disabled={timeRemaining <= 0 || isSubmitting} onClick={handleGuess} variant="contained" size="medium">
-                        {'Raten'}
+                    <Button disabled={timeRemaining <= 0 || isSubmitting} onClick={handleGuess} variant="contained" size="medium" sx={{minWidth: '80px', height: '38px'}} >
+                        {isSubmitting ? <CircularProgress size={27}/> : 'Raten'}
                     </Button>
-                    {isSubmitting && <CircularProgress size={28}/>}
                 </Stack>
                 <Box component="section" sx={{height: '40px' }}>
                     {message && <Typography>{message}</Typography>}
