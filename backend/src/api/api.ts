@@ -1,5 +1,5 @@
 import { Request, Response, Router } from 'express';
-import { checkGuess, CorrectGuessOutcome } from '../stations/guessChecker';
+import { checkGuess } from '../stations/guessChecker';
 import { Stations } from '../stations/stations';
 import PlayerSessionStore, { CorrectlyGuessedStation, GameSession, PlayerSession } from '../storage/playerSessionStore';
 import { GuessRequest, LoginRequest } from './Requests';
